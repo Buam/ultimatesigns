@@ -1,0 +1,34 @@
+name: UltimateSigns
+description: The only sign plugin you will ever need!
+author: Buam
+version: 1.2.1
+api-version: 1.14
+main: com.buam.ultimatesigns.UltimateSigns
+softdepend: [ProtocolLib, Vault]
+commands:
+  ultimatesigns:
+    usage: /ultimatesigns
+    description: The ultimate sign command
+    aliases: [us, usigns, usign, ultimatesign]
+
+permissions:
+  ultimatesigns.*:
+    description: Gives access to all ultimatesigns commands and features
+    children:
+      ultimatesigns.cmd.*: true
+      ultimatesigns.update: true
+  ultimatesigns.cmd.*:
+    description: Gives access to the /ultimatesigns command
+    children:
+      ultimatesigns.cmd.commands:
+        description: Allows you to add commands to signs
+        default: op
+      ultimatesigns.cmd.permission:
+        description: Allows you to modify the permissions of a sign
+        default: op
+      ultimatesigns.cmd.edit:
+        description: Allows you to edit signs
+        default: op
+      ultimatesigns.cmd.copy:
+        description: Allows you to copy signs
+        default: op
