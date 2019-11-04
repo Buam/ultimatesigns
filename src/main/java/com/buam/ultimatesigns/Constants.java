@@ -36,6 +36,7 @@ public class Constants {
     public static final String EDIT_PERMISSION = "ultimatesigns.cmd.edit";
     public static final String PERMISSION_PERMISSION = "ultimatesigns.cmd.permission";
     public static final String COPY_PERMISSION = "ultimatesigns.cmd.copy";
+    public static final String BREAK_PERMISSION = "ultimatesigns.break";
 
 
 

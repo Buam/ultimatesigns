@@ -13,11 +13,25 @@ import org.bukkit.entity.Player;
 import java.util.*;
 
 public class SignManager {
+    /**
+     * Static reference to the sign manager
+     */
     public static SignManager i;
 
+    /**
+     * A set of signs across the whole server (and all its worlds)
+     */
     private Set<USign> signs = new HashSet<>();
+
+    /**
+     * A set of times when a sign was last used by a player
+     * currently unused
+     */
     private Set<SignTime> lastUsed = new HashSet<SignTime>();
 
+    /**
+     * The path were the data.csv file lies
+     */
     private String data_path;
 
     public SignManager(String data_file_path) {
@@ -33,6 +47,12 @@ public class SignManager {
     public void addSign(Location l) {
         if(Constants.isSign(l.getBlock().getType()) && !containsSignAt(l)) {
             signs.add(new USign(l.getBlock(), new ArrayList<>()));
+        }
+    }
+
+    public void addSign(Location l, UUID owner) {
+        if(Constants.isSign(l.getBlock().getType()) && !containsSignAt(l)) {
+            signs.add(new USign(l.getBlock().getLocation(), new ArrayList<>(), new ArrayList<>(), owner));
         }
     }
 
@@ -108,19 +128,49 @@ public class SignManager {
         removeSignAt(l);
     }
 
-
+    /**
+     * Checks if a sign was registered before and is in the list of signs
+     * @param l The location of the block to check
+     * @return true if a sign was registered before
+     */
     public boolean isUltimateSign(Location l) {
         return containsSignAt(l);
     }
 
+    /**
+     * Saves all signs into the data.csv file
+     */
     public void saveSigns() {
         CSVFile.write(data_path, signs);
     }
 
+    /**
+     * Checks if a block is a sign or is the block a sign is attached to
+     * @param l The location of the block to check
+     * @return The sign if one was found that fits the criteria
+     */
+    public USign isRelative(Location l) {
+        for(USign s : signs) {
+            // Returns s if l is the location of a block that is a sign or a block that a sign is attached to
+            if(s.getLocation().equals(l)) return s;
+            org.bukkit.material.Sign sign = (org.bukkit.material.Sign) s.getBlock().getState().getData();
+            if(s.getLocation().equals(s.getBlock().getRelative(sign.getAttachedFace()).getLocation())) return s;
+        }
+        return null;
+    }
+
+    /**
+     * Loads all signs from the data.csv file and populates the sign set with this data
+     */
     public void loadSigns() {
         signs.addAll(CSVFile.read(data_path));
     }
 
+    /**
+     * Get all signs in a specific world
+     * @param world The world to get all signs from
+     * @return A set of all signs in that world
+     */
     public Set<USign> getSignsInWorld(World world) {
 
         Set<USign> out = new HashSet<>();

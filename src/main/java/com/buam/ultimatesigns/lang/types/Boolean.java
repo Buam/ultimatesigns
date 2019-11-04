@@ -4,6 +4,10 @@ public abstract class Boolean {
 
     public abstract boolean get(Object... args);
 
-    public abstract boolean isOfType(String s);
+    public boolean isOfType(String s) {
+        return s.equals(a());
+    }
+
+    public abstract String a();
 
 }

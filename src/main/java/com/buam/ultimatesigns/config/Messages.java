@@ -1,5 +1,6 @@
 package com.buam.ultimatesigns.config;
 
+import com.buam.ultimatesigns.SignHelper;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -21,7 +22,7 @@ public class Messages {
     }
 
     public String s(String key) {
-        return config.getString(key);
+        return SignHelper.translateColors(config.getString(key));
     }
 
     private void createConfig(JavaPlugin plugin) {
@@ -34,9 +35,16 @@ public class Messages {
         config = new YamlConfiguration();
         try {
             config.load(configFile);
+            addNewDefaults();
         } catch(IOException | InvalidConfigurationException e) {
             e.printStackTrace();
         }
+    }
+
+    private void addNewDefaults() throws IOException {
+        if(!config.isSet("no-permission-add-cmd-message")) config.addDefault("no-permission-add-cmd-message", "&cYou don't have permission to add that command");
+        config.options().copyDefaults(true);
+        config.save(configFile);
     }
 
 }

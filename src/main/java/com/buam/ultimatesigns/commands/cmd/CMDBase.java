@@ -5,6 +5,7 @@ import com.buam.ultimatesigns.SignManager;
 import com.buam.ultimatesigns.UltimateSigns;
 import com.buam.ultimatesigns.commands.cmd.sub.CMDEdit;
 import com.buam.ultimatesigns.config.Config;
+import com.buam.ultimatesigns.config.Messages;
 import org.bukkit.ChatColor;
 import org.bukkit.block.Block;
 import org.bukkit.command.Command;
@@ -23,12 +24,14 @@ public class CMDBase {
         // Not a sub command for the console so:
         if(sender instanceof Player) {
             Player player = (Player) sender;
+
+            if(!player.hasPermission(Constants.COMMAND_PERMISSION)) {
+                player.sendMessage(Messages.i.s("no-permission-message"));
+                return true;
+            }
+
             if (args.length == 1) {
                 // No sub sub commands
-                if(!player.hasPermission(Constants.COMMAND_PERMISSION)) {
-                    player.sendMessage(Config.i.s("no-permission-message"));
-                    return true;
-                }
 
                 Block block = player.getTargetBlock(null, 40);
                 // Only if it is a sign. If it is not yet registered, register it
@@ -36,7 +39,7 @@ public class CMDBase {
                     if(!SignManager.i.isUltimateSign(block.getLocation())) SignManager.i.addSign(block.getLocation());
                     listCommands(player, block);
                 } else {
-                    player.sendMessage(UltimateSigns.PREFIX + Config.i.s("look-at-sign-message"));
+                    player.sendMessage(UltimateSigns.PREFIX + Messages.i.s("look-at-sign-message"));
                 }
             } else if(args.length >= 2) {
                 switch(args[1]) {
@@ -53,7 +56,7 @@ public class CMDBase {
                 usage(player);
             }
         } else {
-            sender.sendMessage(Config.i.s("only-players-message"));
+            sender.sendMessage(Messages.i.s("only-players-message"));
         }
 
         return true;
@@ -71,12 +74,12 @@ public class CMDBase {
 
         if(commands.size() == 0) {
             // Sign has no commands
-            player.sendMessage(UltimateSigns.PREFIX + Config.i.s("sign-no-commands-message"));
+            player.sendMessage(UltimateSigns.PREFIX + Messages.i.s("sign-no-commands-message"));
             return false;
         }
 
         player.sendMessage(""); // Empty line for readability
-        player.sendMessage(Config.i.s("sign-commands-message"));
+        player.sendMessage(Messages.i.s("sign-commands-message"));
 
         for(int i = 0; i < commands.size(); i++) {
             player.sendMessage(ChatColor.GREEN + Integer.toString(i + 1) + ": " + ChatColor.BLUE + commands.get(i));

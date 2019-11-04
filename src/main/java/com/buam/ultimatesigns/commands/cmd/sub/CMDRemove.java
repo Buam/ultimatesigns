@@ -4,6 +4,7 @@ import com.buam.ultimatesigns.Constants;
 import com.buam.ultimatesigns.SignManager;
 import com.buam.ultimatesigns.UltimateSigns;
 import com.buam.ultimatesigns.commands.ChatStates;
+import com.buam.ultimatesigns.commands.ParticleHelper;
 import com.buam.ultimatesigns.commands.SignState;
 import com.buam.ultimatesigns.commands.cmd.CMDBase;
 import com.buam.ultimatesigns.config.Config;
@@ -66,6 +67,9 @@ public class CMDRemove implements Listener {
                             player.sendMessage(UltimateSigns.PREFIX + Messages.i.s("removed-command-message") + message);
 
                             UltimateSigns.command.states.remove(player);
+
+                            // Play a cool particle effect!
+                            ParticleHelper.p(signState.block.getLocation());
                         } else {
                             player.sendMessage(UltimateSigns.PREFIX + Messages.i.s("no-command-message"));
                         }

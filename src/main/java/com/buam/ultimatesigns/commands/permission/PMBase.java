@@ -21,12 +21,14 @@ public class PMBase {
         // Not a sub command for the console so:
         if(sender instanceof Player) {
             Player player = (Player) sender;
+
+            if(!player.hasPermission(Constants.PERMISSION_PERMISSION)) {
+                player.sendMessage(Messages.i.s("no-permission-message"));
+                return true;
+            }
+
             if (args.length == 1) {
                 // No sub sub commands
-                if(!player.hasPermission(Constants.PERMISSION_PERMISSION)) {
-                    player.sendMessage(Messages.i.s("no-permission-message"));
-                    return true;
-                }
 
                 Block block = player.getTargetBlock(null, 40);
                 // Only if it is a sign. If it is not yet registered, register it

@@ -10,6 +10,12 @@ import java.util.*;
 
 public class CSVFile {
 
+    /**
+     * Saves a set of Signs to a file in the CSV format without a header
+     * The file gets created if it doesn't exist yet
+     * @param path The path of the file to save to
+     * @param blocks The set of signs to save
+     */
     public static void write(String path, Set<USign> blocks) {
         try {
             File f = new File(path);
@@ -25,6 +31,7 @@ public class CSVFile {
                 line.append(l.getBlockX()).append(",, ");
                 line.append(l.getBlockY()).append(",, ");
                 line.append(l.getBlockZ()).append(",, ");
+                line.append(s.getOwner().toString()).append(",, ");
                 for(String cmd : s.getCommands()) {
                     line.append(cmd).append(",, ");
                 }
@@ -47,6 +54,12 @@ public class CSVFile {
         }
     }
 
+    /**
+     * Reads all signs from a CSV file without a header
+     * Returns an empty set if the file doesn't exist
+     * @param path The path of the file to get
+     * @return The parsed set of signs
+     */
     public static Set<USign> read(String path) {
         Set<USign> out = new HashSet<>();
 
@@ -61,12 +74,14 @@ public class CSVFile {
             while((line = reader.readLine()) != null) {
                 String[] pSplit = line.split("//");
                 String[] split = pSplit[0].split(",,");
-                if(split.length < 4) continue;
+                if(split.length < 5) continue;
 
                 Location l = new Location(Bukkit.getWorld(UUID.fromString(split[0].trim())), Integer.parseInt(split[1].trim()), Integer.parseInt(split[2].trim()), Integer.parseInt(split[3].trim()));
+                UUID owner = UUID.fromString(split[4].trim());
+
                 List<String> commands = new ArrayList<>();
-                if(split.length > 4) {
-                    for (int i = 4; i < split.length; i++) {
+                if(split.length > 5) {
+                    for (int i = 5; i < split.length; i++) {
                         commands.add(split[i].trim());
                     }
                 }
@@ -81,7 +96,7 @@ public class CSVFile {
                     }
                 }
 
-                if(l.getWorld().getBlockAt(l) != null) if(Constants.isSign(l.getWorld().getBlockAt(l).getType())) out.add(new USign(l, commands, permissions));
+                if(l.getWorld().getBlockAt(l) != null) if(Constants.isSign(l.getWorld().getBlockAt(l).getType())) out.add(new USign(l, commands, permissions, owner));
             }
 
             reader.close();

@@ -8,6 +8,12 @@ import java.util.List;
 
 public class CommandFileReader {
 
+    /**
+     * Reads all lines from a file
+     * @param path The path of the file
+     * @return All lines from this file
+     * @throws IOException When a file was not found or something else broke
+     */
     public static List<String> read(String path) throws IOException {
         BufferedReader reader = new BufferedReader(new FileReader(path));
 

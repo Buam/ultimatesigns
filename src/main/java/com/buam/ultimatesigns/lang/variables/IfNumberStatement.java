@@ -30,6 +30,11 @@ public class IfNumberStatement extends Boolean {
         return false;
     }
 
+    @Override
+    public String a() {
+        return "THIS IS AN EMPTY STRING!!!!";
+    }
+
     /*
     Takes in <number><operator><number>
     for example 2<3 or <online>=5

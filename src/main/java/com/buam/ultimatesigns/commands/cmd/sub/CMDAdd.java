@@ -4,6 +4,7 @@ import com.buam.ultimatesigns.Constants;
 import com.buam.ultimatesigns.SignManager;
 import com.buam.ultimatesigns.UltimateSigns;
 import com.buam.ultimatesigns.commands.ChatStates;
+import com.buam.ultimatesigns.commands.ParticleHelper;
 import com.buam.ultimatesigns.commands.SignState;
 import com.buam.ultimatesigns.config.Messages;
 import org.bukkit.block.Block;
@@ -47,9 +48,21 @@ public class CMDAdd implements Listener {
                     // Abort
                     player.sendMessage(UltimateSigns.PREFIX + Messages.i.s("abort-message"));
                 } else {
+                    // Check if command is a console command and if the player has the permission to add that command
+                    if(message.contains("(console)")) {
+                        if(!player.hasPermission("ultimatesigns.console")) {
+                            player.sendMessage(UltimateSigns.PREFIX + Messages.i.s("no-permission-add-cmd-message"));
+                            e.setCancelled(true);
+                            return;
+                        }
+                    }
+
                     // Add command
                     SignManager.i.addCommand(signState.block.getLocation(), message);
                     player.sendMessage(UltimateSigns.PREFIX + Messages.i.s("added-command-message") + message);
+
+                    // Play a cool particle effect!
+                    ParticleHelper.p(signState.block.getLocation());
                 }
 
                 UltimateSigns.command.states.remove(player);

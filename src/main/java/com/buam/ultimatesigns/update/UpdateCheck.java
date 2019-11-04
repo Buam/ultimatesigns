@@ -16,13 +16,29 @@ import java.util.Objects;
 import java.util.function.BiConsumer;
 
 public class UpdateCheck {
-
+    /**
+     * The spigot URL to get updates from
+     */
     private static final String SPIGOT_URL = "https://api.spigotmc.org/legacy/update.php?resource=%d";
 
+    /**
+     * A private reference to the plugin
+     */
     private final JavaPlugin javaPlugin;
 
+    /**
+     * The current version of the plugin
+     */
     private String currentVersion;
+
+    /**
+     * The resource if of the plugin
+     */
     private int resourceId = -1;
+
+    /**
+     * The response of the version, whether there is a new version or not
+     */
     private BiConsumer<VersionResponse, String> versionResponse;
 
     private UpdateCheck(@Nonnull JavaPlugin javaPlugin) {
@@ -49,6 +65,9 @@ public class UpdateCheck {
         return this;
     }
 
+    /**
+     * Checks for a new version
+     */
     public void check() {
         Objects.requireNonNull(this.javaPlugin, "javaPlugin");
         Objects.requireNonNull(this.currentVersion, "currentVersion");

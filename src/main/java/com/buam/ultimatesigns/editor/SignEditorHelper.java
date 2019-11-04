@@ -1,4 +1,4 @@
-package com.buam.ultimatesigns.extras;
+package com.buam.ultimatesigns.editor;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.*;
@@ -30,12 +30,36 @@ import org.json.simple.JSONObject;
 
 
 public class SignEditorHelper {
-    protected ProtocolManager protocolManager;
-    protected PacketAdapter packetListener;
-    protected Map<String, SignGUIListener> listeners;
-    protected Map<String, Vector> signLocations;
-    protected Set<UUID> expectsSignUpdate;
+    /**
+     * The protocol manager of ProtocolLib
+     */
+    private ProtocolManager protocolManager;
 
+    /**
+     * The UPDATE_SIGN packet listener
+     */
+    private PacketAdapter packetListener;
+
+    /**
+     * All listeners currently active
+     */
+    private Map<String, SignGUIListener> listeners;
+
+    /**
+     * All the sign locations that are being edited
+     */
+    private Map<String, Vector> signLocations;
+
+    /**
+     * A set of players who expect a sign update (because they opened the editor)
+     * The SIGN_UPDATE packets of these players will be caught and modified
+     */
+    private Set<UUID> expectsSignUpdate;
+
+    /**
+     * Sets up the packet listener and all variables
+     * @param plugin
+     */
     public SignEditorHelper(Plugin plugin) {
         protocolManager = ProtocolLibrary.getProtocolManager();
         listeners = new ConcurrentHashMap<String, SignGUIListener>();
@@ -86,7 +110,13 @@ public class SignEditorHelper {
         return "";
     }
 
-
+    /**
+     * Opens the sign editor for a player
+     * @param player The player
+     * @param sign The sign
+     * @param defaultText The default text which should be displayed in the editor (the original sign text)
+     * @param response The sign listener which will handle the closing of the editor and set the signs lines to the right value
+     */
     public void open(Player player, Location sign, String[] defaultText, SignGUIListener response) {
         List<PacketContainer> packets = new ArrayList<PacketContainer>();
         int x = sign.getBlockX();
@@ -134,12 +164,18 @@ public class SignEditorHelper {
 
     }
 
+    /**
+     * Clean up everything and remove the packet listener
+     */
     public void destroy() {
         protocolManager.removePacketListener(packetListener);
         listeners.clear();
         signLocations.clear();
     }
 
+    /**
+     * The sign listener interface
+     */
     public interface SignGUIListener {
         public void onSignDone(Player player, String[] lines);
     }
