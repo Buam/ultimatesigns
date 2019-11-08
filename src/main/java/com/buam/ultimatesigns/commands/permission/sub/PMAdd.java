@@ -4,6 +4,7 @@ import com.buam.ultimatesigns.Constants;
 import com.buam.ultimatesigns.SignManager;
 import com.buam.ultimatesigns.UltimateSigns;
 import com.buam.ultimatesigns.commands.ChatStates;
+import com.buam.ultimatesigns.commands.ParticleHelper;
 import com.buam.ultimatesigns.commands.SignState;
 import com.buam.ultimatesigns.config.Messages;
 import org.bukkit.block.Block;
@@ -47,9 +48,12 @@ public class PMAdd implements Listener {
                     // Abort
                     player.sendMessage(UltimateSigns.PREFIX + Messages.i.s("abort-message"));
                 } else {
-                    // Add command
+                    // Add permission
                     SignManager.i.addPermission(signState.block.getLocation(), message);
                     player.sendMessage(UltimateSigns.PREFIX + Messages.i.s("added-permission-message") + message);
+
+                    // Play a cool particle effect!
+                    ParticleHelper.p(signState.block.getLocation());
                 }
 
                 UltimateSigns.command.states.remove(player);

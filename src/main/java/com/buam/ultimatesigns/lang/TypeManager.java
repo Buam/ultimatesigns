@@ -2,6 +2,7 @@ package com.buam.ultimatesigns.lang;
 
 import com.buam.ultimatesigns.USign;
 import com.buam.ultimatesigns.UltimateSigns;
+import com.buam.ultimatesigns.config.Aliases;
 import com.buam.ultimatesigns.config.Config;
 import com.buam.ultimatesigns.lang.exceptions.InvalidArgumentsException;
 import com.buam.ultimatesigns.lang.variables.*;
@@ -136,19 +137,31 @@ public class TypeManager {
         for(Class t : numberTypes) {
             Number n = (Number) t.newInstance();
             s = s.replace(n.a(), Integer.toString(n.get(p, sign)));
+            for(String alias : Aliases.i.getAliases(n.a())) {
+                s = s.replace("[" + alias + "]", Integer.toString(n.get(p, sign)));
+            }
         }
         if(UltimateSigns.economy != null) {
             for(Class t : requiresVault) {
                 Number n = (Number) t.newInstance();
                 s = s.replace(n.a(), Integer.toString(n.get(p, sign)));
+                for(String alias : Aliases.i.getAliases(n.a())) {
+                    s = s.replace("[" + alias + "]", Integer.toString(n.get(p, sign)));
+                }
             }
         }
         for(Class t : textTypes) {
             Text n = (Text) t.newInstance();
             s = s.replace(n.a(), n.get(p, sign));
+            for(String alias : Aliases.i.getAliases(n.a())) {
+                s = s.replace("[" + alias + "]", n.get(p, sign));
+            }
         }
         for(Variable v : Config.i.getVariables()) {
             s = s.replace("[" + v.getName() + "]", v.getType() == VariableType.INTEGER ? Integer.toString(v.getIntValue()) : v.getTextValue());
+            for(String alias : Aliases.i.getAliases(v.getName())) {
+                s = s.replace("[" + alias + "]", v.getType() == VariableType.INTEGER ? Integer.toString(v.getIntValue()) : v.getTextValue());
+            }
         }
         return s;
     }

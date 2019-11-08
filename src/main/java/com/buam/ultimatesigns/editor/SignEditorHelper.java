@@ -1,22 +1,6 @@
 package com.buam.ultimatesigns.editor;
 
-import java.lang.reflect.InvocationTargetException;
-import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
-
 import com.buam.ultimatesigns.Constants;
-import com.buam.ultimatesigns.UltimateSigns;
-import io.netty.util.internal.ConcurrentSet;
-import jdk.nashorn.internal.objects.Global;
-import jdk.nashorn.internal.parser.JSONParser;
-import net.md_5.bungee.api.chat.TextComponent;
-import net.minecraft.server.v1_14_R1.IChatBaseComponent;
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.entity.Player;
-import org.bukkit.plugin.Plugin;
-import org.bukkit.util.Vector;
 import com.comphenix.protocol.PacketType;
 import com.comphenix.protocol.ProtocolLibrary;
 import com.comphenix.protocol.ProtocolManager;
@@ -26,7 +10,17 @@ import com.comphenix.protocol.events.PacketEvent;
 import com.comphenix.protocol.wrappers.BlockPosition;
 import com.comphenix.protocol.wrappers.WrappedBlockData;
 import com.comphenix.protocol.wrappers.WrappedChatComponent;
-import org.json.simple.JSONObject;
+import io.netty.util.internal.ConcurrentSet;
+import org.bukkit.Bukkit;
+import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.entity.Player;
+import org.bukkit.plugin.Plugin;
+import org.bukkit.util.Vector;
+
+import java.lang.reflect.InvocationTargetException;
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 
 public class SignEditorHelper {
@@ -93,21 +87,6 @@ public class SignEditorHelper {
                     }
                 }
         );
-    }
-
-    private String convertJSON(String in) {
-        JSONParser parser = new JSONParser(in, Global.instance(), false);
-        JSONObject o = (JSONObject) parser.parse();
-
-        String text = (String) o.get("text");
-        String extra = (String) o.get("extra");
-
-        if(extra.equalsIgnoreCase("")) {
-            return text;
-        } else if(text.equalsIgnoreCase("")) {
-            return extra;
-        }
-        return "";
     }
 
     /**

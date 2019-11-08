@@ -152,7 +152,7 @@ public class SignListener implements Listener {
                             if(left && hasLeft) e.setCancelled(true);
                         }
                     } else {
-                        e.getPlayer().sendMessage(Config.i.s("no-permission-sign-message"));
+                        e.getPlayer().sendMessage(Messages.i.s("no-permission-sign-message"));
                     }
                 }
             }

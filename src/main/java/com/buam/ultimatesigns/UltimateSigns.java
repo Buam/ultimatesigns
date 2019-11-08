@@ -1,6 +1,7 @@
 package com.buam.ultimatesigns;
 
 import com.buam.ultimatesigns.commands.CommandUS;
+import com.buam.ultimatesigns.config.Aliases;
 import com.buam.ultimatesigns.config.Config;
 import com.buam.ultimatesigns.config.Messages;
 import com.buam.ultimatesigns.events.SignListener;
@@ -101,6 +102,7 @@ public class UltimateSigns extends JavaPlugin {
         // Load configuration
         new Config(getConfig());
         new Messages(this);
+        new Aliases(this);
 
         // New SignManager with data path
         new SignManager(getDataFolder() + Constants.DATA_FILE);
@@ -125,6 +127,7 @@ public class UltimateSigns extends JavaPlugin {
         reloadConfig();
         new Config(getConfig());
         new Messages(this);
+        new Aliases(this);
 
         // Re-register sign update task
         Bukkit.getScheduler().cancelTasks(this);
@@ -169,6 +172,7 @@ public class UltimateSigns extends JavaPlugin {
         UpdateCheck
                 .of(this)
                 .resourceId(72462)
+                .currentVersion(getDescription().getVersion().toLowerCase().trim())
                 .handleResponse(((versionResponse, version) ->  {
                     switch(versionResponse) {
                         case FOUND_NEW:

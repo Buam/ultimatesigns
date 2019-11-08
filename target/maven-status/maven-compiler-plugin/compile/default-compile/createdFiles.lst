@@ -12,6 +12,7 @@ com\buam\ultimatesigns\update\VersionResponse.class
 com\buam\ultimatesigns\commands\permission\sub\PMAdd.class
 com\buam\ultimatesigns\UltimateSigns$1.class
 com\buam\ultimatesigns\commands\cmd\sub\CMDEdit.class
+com\buam\ultimatesigns\config\Aliases.class
 com\buam\ultimatesigns\extras\SignUpdater.class
 com\buam\ultimatesigns\lang\types\Text.class
 com\buam\ultimatesigns\commands\permission\sub\PMEdit.class

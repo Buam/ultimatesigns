@@ -4,6 +4,7 @@ import com.buam.ultimatesigns.Constants;
 import com.buam.ultimatesigns.SignManager;
 import com.buam.ultimatesigns.UltimateSigns;
 import com.buam.ultimatesigns.commands.ChatStates;
+import com.buam.ultimatesigns.commands.ParticleHelper;
 import com.buam.ultimatesigns.commands.SignState;
 import com.buam.ultimatesigns.commands.cmd.CMDBase;
 import com.buam.ultimatesigns.config.Messages;
@@ -82,6 +83,9 @@ public class CMDEdit implements Listener {
 
                     // Remove the player from the states list, he's done
                     UltimateSigns.command.states.remove(player);
+
+                    // Play a cool particle effect!
+                    ParticleHelper.p(state.block.getLocation());
                 }
             }
 
