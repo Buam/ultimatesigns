@@ -4,6 +4,7 @@ import com.buam.ultimatesigns.SignHelper;
 import com.buam.ultimatesigns.USign;
 import com.buam.ultimatesigns.UltimateSigns;
 import com.buam.ultimatesigns.lang.exceptions.InvalidArgumentsException;
+import com.buam.ultimatesigns.lang.types.Number;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -36,9 +37,11 @@ public class Language {
         if(lines.length == 0) return;
         // FOR
         if(a != 0) {
-            a--;
             if(currentLine == c) {
-                currentLine = b;
+                if(a != 1) {
+                    currentLine = b;
+                }
+                a--;
             }
         }
         // ENDFOR
@@ -56,9 +59,15 @@ public class Language {
             cmd = cmd.replace("(right)", "").trim();
         }
 
+        int delayMillis = 0;
+
         if(!cmd.trim().equalsIgnoreCase("") && exec) {
 
             // Execute
+            if(a != 0) {
+                // Index variable in for loop
+                cmd = cmd.replace("[i]", Integer.toString(a));
+            }
             if (cmd.contains("(msg")) {
                 cmd = cmd.replace("(msg", "");
                 cmd = cmd.replace(")", "");
@@ -80,6 +89,16 @@ public class Language {
                     messageTo.sendMessage(message);
                 } else {
                     p.sendMessage(ChatColor.RED + "Player " + player + " does not exist");
+                }
+            } else if(cmd.contains("(delay")) {
+                cmd = cmd.replace("(delay", "");
+                cmd = cmd.replace(")", "");
+                cmd = cmd.trim();
+
+                try {
+                    delayMillis = Integer.parseInt(cmd);
+                } catch(NumberFormatException e) {
+                    throw new InvalidArgumentsException("Not a number: " + cmd);
                 }
             } else if (cmd.contains("(goto")) {
                 cmd = cmd.replace("(goto", "");
@@ -133,7 +152,14 @@ public class Language {
 
         currentLine++;
         if(lines.length == currentLine) return;
-        execute(p, s);
+        // Schedule task with specific delay and convert the delay from milliseconds to ticks
+        Bukkit.getScheduler().scheduleSyncDelayedTask(UltimateSigns.i, () -> {
+            try {
+                execute(p, s);
+            } catch (InvalidArgumentsException | InstantiationException | IllegalAccessException ex) {
+                ex.printStackTrace();
+            }
+        }, delayMillis / 1000 * 20);
     }
 
     private void executeCommand(String cmd, Player p, USign s) throws InstantiationException, IllegalAccessException {

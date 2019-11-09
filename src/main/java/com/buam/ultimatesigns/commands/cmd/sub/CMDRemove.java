@@ -19,11 +19,11 @@ import org.bukkit.event.player.AsyncPlayerChatEvent;
 public class CMDRemove implements Listener {
 
     public boolean onCommand(Player player) {
-        Block target = player.getTargetBlock(null, 40);
+        Block target = player.getTargetBlockExact(40);
 
         // If it is not a sign, don't do anything
         if(!Constants.isSign(target.getType())) {
-            player.sendMessage(UltimateSigns.PREFIX + Config.i.s("look-at-sign-message"));
+            player.sendMessage(UltimateSigns.PREFIX + Messages.i.s("look-at-sign-message"));
             return true;
         }
 

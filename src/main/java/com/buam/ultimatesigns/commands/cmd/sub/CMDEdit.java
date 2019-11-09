@@ -17,7 +17,7 @@ import org.bukkit.event.player.AsyncPlayerChatEvent;
 public class CMDEdit implements Listener {
 
     public boolean onCommand(Player player) {
-        Block target = player.getTargetBlock(null, 40);
+        Block target = player.getTargetBlockExact(40);
 
         // If it is not a sign, don't do anything
         if(!Constants.isSign(target.getType())) {

@@ -18,7 +18,7 @@ public class CMDFile {
     public boolean onCommand(Player player, String[] args) {
 
         if(args.length >= 3) {
-            Block target = player.getTargetBlock(null, 40);
+            Block target = player.getTargetBlockExact(40);
 
             // If it is not a sign, don't do anything
             if(!Constants.isSign(target.getType())) {

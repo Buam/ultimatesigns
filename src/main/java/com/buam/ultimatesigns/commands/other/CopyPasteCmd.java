@@ -26,7 +26,7 @@ public class CopyPasteCmd {
             }
 
             // See if it is a valid sign
-            Block target = player.getTargetBlock(null, 40);
+            Block target = player.getTargetBlockExact(40);
 
             // If it is not a sign, don't do anything
             if(!Constants.isSign(target.getType())) {
