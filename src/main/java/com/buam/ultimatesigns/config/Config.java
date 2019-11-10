@@ -1,12 +1,9 @@
 package com.buam.ultimatesigns.config;
 
 import com.buam.ultimatesigns.SignHelper;
-import com.buam.ultimatesigns.UltimateSigns;
 import com.buam.ultimatesigns.lang.TypeManager;
 import com.buam.ultimatesigns.variables.Variable;
-import com.buam.ultimatesigns.variables.VariableHelper;
 import com.buam.ultimatesigns.variables.VariableType;
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -69,7 +66,7 @@ public class Config {
     }
 
     /**
-     * Translates a string from the configuration with colors
+     * Translates a string from the configuration with colors.
      * @param key The key to get
      * @return The translated string
      */

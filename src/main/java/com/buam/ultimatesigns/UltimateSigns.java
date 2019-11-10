@@ -4,8 +4,8 @@ import com.buam.ultimatesigns.commands.CommandUS;
 import com.buam.ultimatesigns.config.Aliases;
 import com.buam.ultimatesigns.config.Config;
 import com.buam.ultimatesigns.config.Messages;
-import com.buam.ultimatesigns.events.SignListener;
 import com.buam.ultimatesigns.editor.SignEditorHelper;
+import com.buam.ultimatesigns.events.SignListener;
 import com.buam.ultimatesigns.extras.SignUpdater;
 import com.buam.ultimatesigns.update.UpdateCheck;
 import com.comphenix.protocol.PacketType;
@@ -78,6 +78,8 @@ public class UltimateSigns extends JavaPlugin {
 
         if(!setupEconomy()) {
             System.out.println("[UltimateSigns] No Vault dependency found!");
+        } else {
+            System.out.println("[UltimateSigns] Successfully hooked into Vault!");
         }
 
         if(getServer().getPluginManager().isPluginEnabled("ProtocolLib") && (version.contains("1_14") || version.contains("1_13") || version.contains("1_12"))) {
@@ -146,6 +148,7 @@ public class UltimateSigns extends JavaPlugin {
     public void onDisable() {
         SignManager.i.saveSigns();
         signEditor.destroy();
+        ProtocolLibrary.getProtocolManager().removePacketListeners(this);
     }
 
     /**
@@ -165,7 +168,7 @@ public class UltimateSigns extends JavaPlugin {
     }
 
     /**
-     * Update checker (does not actually update)
+     * Update checker
      */
     private void checkForUpdates() {
         System.out.println("[UltimateSigns] Checking for updates...");

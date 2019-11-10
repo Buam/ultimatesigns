@@ -73,4 +73,11 @@ public class SignUpdater {
         }
     }
 
+    /**
+     * Schedules a new Update for a block which is 2 ticks delayed so the sign update is the last packet the player receives
+     * @param block
+     */
+    public static void scheduleSignUpdate(Block block) {
+        Bukkit.getScheduler().scheduleSyncDelayedTask(UltimateSigns.i, () -> handleSignUpdate(block), 2);
+    }
 }

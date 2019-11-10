@@ -24,13 +24,9 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 
 import java.util.List;
+import java.util.UUID;
 
 public class SignListener implements Listener {
-
-    /**
-     * A temporary array which gets used to pass data (idk why it is there, I could as well just delete it but I don't)
-     */
-    private String[] signEditTemp;
 
     /**
      * Gets called when a block breaks. Checks if that block is related to a registered sign and checks
@@ -66,18 +62,14 @@ public class SignListener implements Listener {
      */
     @EventHandler
     public void onSignChange(SignChangeEvent e) {
-        if (signEditTemp != null) {
-            for (int i = 0; i < 4; i++) {
-                e.setLine(i, signEditTemp[i]);
-            }
-            signEditTemp = null;
-        }
         // Add the sign if it isn't registered yet
         if(!SignManager.i.isUltimateSign(e.getBlock().getLocation())) SignManager.i.addSign(e.getBlock().getLocation(), e.getPlayer().getUniqueId());
 
         // Update everything and save
-        Bukkit.getScheduler().scheduleSyncDelayedTask(UltimateSigns.i, () -> SignUpdater.handleSignUpdate(e.getBlock()), 2);
-        Bukkit.getScheduler().scheduleSyncDelayedTask(UltimateSigns.i, () -> SignManager.i.saveSigns(), 10);
+        SignUpdater.scheduleSignUpdate(e.getBlock());
+        // Bukkit.getScheduler().scheduleSyncDelayedTask(UltimateSigns.i, () -> SignUpdater.handleSignUpdate(e.getBlock()), 2);
+        // Save Signs
+        // Bukkit.getScheduler().scheduleSyncDelayedTask(UltimateSigns.i, () -> SignManager.i.saveSigns(), 10);
     }
 
     /**
@@ -93,6 +85,16 @@ public class SignListener implements Listener {
                 SignUpdater.handleSignsForPlayer(e.getPlayer());
             }
         }, 2);
+
+        // Say something when the dev joined (cause I'm so awesome)
+        // Of course it is configurable
+        if(Config.i.b("dev-join-notify") && e.getPlayer().getUniqueId().equals(UUID.fromString("576a9d57-abea-4e86-bd0e-5971d2b4bb77"))) {
+            for(Player p : Bukkit.getOnlinePlayers()) {
+                if(p.hasPermission("ultimatesigns.break")) {
+                    p.sendMessage(UltimateSigns.PREFIX + "A developer (" + e.getPlayer().getName() + ") has just joined the server!");
+                }
+            }
+        }
     }
 
     /**

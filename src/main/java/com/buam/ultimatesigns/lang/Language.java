@@ -144,6 +144,10 @@ public class Language {
 
                 if (!TypeManager.getIf(cmd, p, s)) {
                     currentLine = findNextEndIf() + 2;
+
+                    if(currentLine == 2) {
+                        throw new InvalidArgumentsException("If-Statement has no (endif)");
+                    }
                 }
             } else {
                 if (!cmd.contains("(endfor)") && !cmd.contains("(endif)")) executeCommand(cmd, p, s);
@@ -151,7 +155,7 @@ public class Language {
         }
 
         currentLine++;
-        if(lines.length == currentLine) return;
+        if(lines.length <= currentLine) return; // We have reached the end
         // Schedule task with specific delay and convert the delay from milliseconds to ticks
         Bukkit.getScheduler().scheduleSyncDelayedTask(UltimateSigns.i, () -> {
             try {
@@ -159,7 +163,7 @@ public class Language {
             } catch (InvalidArgumentsException | InstantiationException | IllegalAccessException ex) {
                 ex.printStackTrace();
             }
-        }, delayMillis / 1000 * 20);
+        }, Math.round(delayMillis / 1000 * 20));
     }
 
     private void executeCommand(String cmd, Player p, USign s) throws InstantiationException, IllegalAccessException {
@@ -189,7 +193,7 @@ public class Language {
 
     private int findNextEndIf() {
         for(int i = currentLine; i< lines.length; i++) {
-            if(lines[i].trim().equalsIgnoreCase("(endif")) {
+            if(lines[i].trim().equalsIgnoreCase("(endif)")) {
                 return i;
             }
         }

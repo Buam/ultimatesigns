@@ -10,6 +10,9 @@ enable-update-permission: true
 # Protect signs (only the owner of the sign or players with a specific permission can break it)
 protect-signs: true
 
+# Notify if an UltimateSigns developer joins the server
+dev-join-notify: true
+
 # Custom variables. Can be used on signs and in commands (for example: [example])
 variables:
   example:

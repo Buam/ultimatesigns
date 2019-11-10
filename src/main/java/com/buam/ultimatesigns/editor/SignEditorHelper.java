@@ -147,7 +147,6 @@ public class SignEditorHelper {
      * Clean up everything and remove the packet listener
      */
     public void destroy() {
-        protocolManager.removePacketListener(packetListener);
         listeners.clear();
         signLocations.clear();
     }

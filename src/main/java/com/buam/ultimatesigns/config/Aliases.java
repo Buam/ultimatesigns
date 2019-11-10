@@ -1,6 +1,5 @@
 package com.buam.ultimatesigns.config;
 
-import com.google.common.collect.Sets;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
