@@ -2,10 +2,14 @@ package com.buam.ultimatesigns;
 
 import com.buam.ultimatesigns.config.Config;
 import com.buam.ultimatesigns.lang.TypeManager;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.block.Block;
 import org.bukkit.block.Sign;
+import org.bukkit.block.data.BlockData;
+import org.bukkit.block.data.Directional;
 import org.bukkit.entity.Player;
+import org.bukkit.material.MaterialData;
 
 public class SignHelper {
 
@@ -49,5 +53,29 @@ public class SignHelper {
      */
     public static String translateColors(String in) {
         return ChatColor.translateAlternateColorCodes('&', in);
+    }
+
+    /**
+     * Gets the block a Sign is attached to (if a sign is given)
+     * @param block Must be a sign
+     * @return The block the sign is attached to
+     */
+    public static Block getAttachedBlock(Block block) {
+        if (block != null && block.getState() instanceof Sign) {
+            String version = Bukkit.getVersion();
+            // For newer versions, use the BlockData API
+            if (version.contains("1.14") || version.contains("1.13")) {
+                BlockData data = block.getBlockData();
+                if (data instanceof Directional) {
+                    Directional directional = (Directional) data;
+                    return block.getRelative(directional.getFacing().getOppositeFace());
+                }
+                // For older versions, use Magic Numbers with MaterialData (should also work on newer versions)
+            } else {
+                org.bukkit.material.Sign s = (org.bukkit.material.Sign) block.getState().getData();
+                return block.getRelative(s.getAttachedFace());
+            }
+        }
+        return null;
     }
 }
