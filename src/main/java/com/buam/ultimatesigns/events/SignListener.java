@@ -35,7 +35,6 @@ public class SignListener implements Listener {
      */
     @EventHandler
     public void onBlockBreak(BlockBreakEvent e) {
-        if(!Config.i.b("protect-signs")) return; // No need to do anything. We don't have to protect the signs
         // Remove the sign from the list if it's the owner
         Block b = e.getBlock();
 
@@ -45,7 +44,7 @@ public class SignListener implements Listener {
             Player player = e.getPlayer();
 
             // It is a sign, or the block that is going to break has a sign attached to it
-            if(s.getOwner().equals(player.getUniqueId()) || player.hasPermission(Constants.BREAK_PERMISSION)) {
+            if(s.getOwner().equals(player.getUniqueId()) || player.hasPermission(Constants.BREAK_PERMISSION) || !Config.i.b("protect-signs")) {
                 // The sign was rightfully broken by its owner
                 SignManager.i.removeSign(b.getLocation());
             } else {

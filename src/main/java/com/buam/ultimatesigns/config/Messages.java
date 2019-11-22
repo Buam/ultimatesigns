@@ -41,10 +41,6 @@ public class Messages {
         }
     }
 
-    /**
-     * Add new keys after update without replacing everything
-     * @throws IOException
-     */
     private void addNewDefaults() throws IOException {
         if(!config.isSet("no-permission-add-cmd-message")) config.addDefault("no-permission-add-cmd-message", "&cYou don't have permission to add that command");
         config.options().copyDefaults(true);

@@ -9,7 +9,6 @@ import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.Sign;
 import org.bukkit.entity.Player;
-import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.*;
 
@@ -139,16 +138,8 @@ public class SignManager {
     }
 
     /**
-     * Saves all signs into the data.csv file asynchronously
+     * Saves all signs into the data.csv file
      */
-    public void saveSignsAsync() {
-        new BukkitRunnable(){
-            public void run() {
-                CSVFile.write(data_path, signs);
-            }
-        }.runTask(UltimateSigns.i);
-    }
-
     public void saveSigns() {
         CSVFile.write(data_path, signs);
     }
@@ -162,7 +153,8 @@ public class SignManager {
         for(USign s : signs) {
             // Returns s if l is the location of a block that is a sign or a block that a sign is attached to
             if(s.getLocation().equals(l)) return s;
-            if(s.getLocation().equals(SignHelper.getAttachedBlock(s.getLocation().getBlock()).getLocation())) return s;
+            org.bukkit.material.Sign sign = (org.bukkit.material.Sign) s.getBlock().getState().getData();
+            if(s.getLocation().equals(s.getBlock().getRelative(sign.getAttachedFace()).getLocation())) return s;
         }
         return null;
     }
