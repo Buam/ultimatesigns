@@ -10,6 +10,12 @@ enable-update-permission: true
 # Protect signs (only the owner of the sign or players with a specific permission can break it)
 protect-signs: true
 
+# The interval at which Sign Uses should be reset in seconds. 0 for never
+sign-uses-reset-interval: 0
+
+# The time that will be returned when using the [lastused] variable when the player has never used that sign before
+not-used-yet-time: 0
+
 # Notify if an UltimateSigns developer joins the server
 dev-join-notify: true
 

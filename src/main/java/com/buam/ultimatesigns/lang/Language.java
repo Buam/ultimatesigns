@@ -64,7 +64,7 @@ public class Language {
         if(!cmd.trim().equalsIgnoreCase("") && exec) {
 
             // Execute
-            if(a != 0) {
+            if (a != 0) {
                 // Index variable in for loop
                 cmd = cmd.replace("[i]", Integer.toString(a));
             }
@@ -90,14 +90,14 @@ public class Language {
                 } else {
                     p.sendMessage(ChatColor.RED + "Player " + player + " does not exist");
                 }
-            } else if(cmd.contains("(delay")) {
+            } else if (cmd.contains("(delay")) {
                 cmd = cmd.replace("(delay", "");
                 cmd = cmd.replace(")", "");
                 cmd = cmd.trim();
 
                 try {
                     delayMillis = Integer.parseInt(cmd);
-                } catch(NumberFormatException e) {
+                } catch (NumberFormatException e) {
                     throw new InvalidArgumentsException("Not a number: " + cmd);
                 }
             } else if (cmd.contains("(goto")) {
@@ -145,10 +145,12 @@ public class Language {
                 if (!TypeManager.getIf(cmd, p, s)) {
                     currentLine = findNextEndIf() + 2;
 
-                    if(currentLine == 2) {
+                    if (currentLine == 2) {
                         throw new InvalidArgumentsException("If-Statement has no (endif)");
                     }
                 }
+            } else if(cmd.contains("(stop)")) {
+                return;
             } else {
                 if (!cmd.contains("(endfor)") && !cmd.contains("(endif)")) executeCommand(cmd, p, s);
             }
@@ -156,6 +158,7 @@ public class Language {
 
         currentLine++;
         if(lines.length <= currentLine) return; // We have reached the end
+
         // Schedule task with specific delay and convert the delay from milliseconds to ticks
         Bukkit.getScheduler().scheduleSyncDelayedTask(UltimateSigns.i, () -> {
             try {

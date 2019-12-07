@@ -1,7 +1,9 @@
 package com.buam.ultimatesigns;
 
+import com.buam.ultimatesigns.config.Config;
 import com.buam.ultimatesigns.extras.SignUpdater;
 import com.buam.ultimatesigns.files.CSVFile;
+import jdk.vm.ci.meta.Constant;
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
@@ -11,6 +13,7 @@ import org.bukkit.block.Sign;
 import org.bukkit.entity.Player;
 
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class SignManager {
     /**
@@ -21,13 +24,18 @@ public class SignManager {
     /**
      * A set of signs across the whole server (and all its worlds)
      */
-    private Set<USign> signs = new HashSet<>();
+    private Set<USign> signs;
 
     /**
      * A set of times when a sign was last used by a player
      * currently unused
      */
-    private Set<SignTime> lastUsed = new HashSet<SignTime>();
+    private Set<SignTime> lastUsed;
+
+    /**
+     * A set of times a sign was used. Will be resetted after a configurable amount of time
+     */
+    private Set<SignUses> uses;
 
     /**
      * The path were the data.csv file lies
@@ -37,6 +45,11 @@ public class SignManager {
     public SignManager(String data_file_path) {
         i = this;
         data_path = data_file_path;
+
+        signs = new HashSet<>();
+        uses = new HashSet<>();
+        lastUsed = new HashSet<>();
+
         loadSigns();
     }
 
@@ -113,15 +126,18 @@ public class SignManager {
     }
 
     public void saveSignTime(Player p, Location l) {
-        lastUsed.add(new SignTime(p, signAt(l), 1000000000L));
+        lastUsed.removeIf(sign -> sign.getPlayerID().equals(p.getUniqueId()) && sign.getLocation().equals(l));
+        lastUsed.add(new SignTime(p.getUniqueId(), l));
     }
 
     private void removeSignTime(Player p, Location l) {
-        lastUsed.remove(new SignTime(p, signAt(l), 1000000000L));
-    }
+        lastUsed.remove(new SignTime(p.getUniqueId(), l, 1000000000L));
+    } // Last argument doesn't matter because of the custom equals() method
 
     private void removeSignAt(Location l) {
         signs.removeIf(sign -> sign.getBlock().getLocation().equals(l));
+        lastUsed.removeIf(use -> use.getLocation().equals(l));
+        uses.removeIf(use -> use.getSign().equals(l));
     }
 
     public void removeSign(Location l) {
@@ -160,10 +176,22 @@ public class SignManager {
     }
 
     /**
-     * Loads all signs from the data.csv file and populates the sign set with this data
+     * Loads data from the data.csv file, clears all sets and populates the sign set, the times set and the uses set with this data
      */
     public void loadSigns() {
-        signs.addAll(CSVFile.read(data_path));
+        SignData data = CSVFile.read(data_path);
+
+        System.out.println("SIGNS: " + data.signs.size());
+        System.out.println("USES: " + data.uses.size());
+        System.out.println("TIMES: " + data.times.size());
+
+        signs.clear();
+        uses.clear();
+        lastUsed.clear();
+
+        signs.addAll(data.signs);
+        uses.addAll(data.uses);
+        lastUsed.addAll(data.times);
     }
 
     /**
@@ -185,13 +213,55 @@ public class SignManager {
 
     }
 
-    public SignTime getLastUsed(Player arg, USign arg1) {
+    public SignTime getLastUsed(Player player, USign sign) {
         for(SignTime st : lastUsed) {
-            if(st.equals(new SignTime(arg, arg1))) {
+            if(st.equals(new SignTime(player.getUniqueId(), sign.getLocation()))) {
                 return st;
             }
         }
-        return new SignTime(arg, arg1, 1000000000L);
+        return new SignTime(player.getUniqueId(), sign.getLocation(), Config.i.i("not-used-yet-time"));
+    }
+
+    public Set<SignTime> getAllSignTimes() {
+        return lastUsed;
+    }
+
+    public Set<SignUses> getAllSignUses() {
+        return uses;
+    }
+
+    public void saveUse(Player player, Location location) {
+        for(SignUses u : uses) {
+            if(u.getPlayer().equals(player.getUniqueId()) && u.getSign().equals(location)) {
+                u.inc();
+                return;
+            }
+        }
+        uses.add(new SignUses(player.getUniqueId(), location, 1));
+    }
+
+
+
+    public void resetSignUses() {
+        long currTime = System.currentTimeMillis();
+        long resetTime = Config.i.i(Constants.SIGN_USES_RESET_TIME) * 1000;
+        if(currTime - UltimateSigns.i.lastReset >= resetTime) {
+            for(SignUses u : uses) {
+                u.reset();
+            }
+            System.out.println("[UltimateSigns] Reset all sign uses");
+
+            UltimateSigns.i.lastReset = UltimateSigns.i.lastReset + resetTime;
+        }
+    }
+
+    public int getUses(Player player, Location location) {
+        for(SignUses u : uses) {
+            if(u.getPlayer().equals(player.getUniqueId()) && u.getSign().equals(location)) {
+                return u.getUses();
+            }
+        }
+        return 0;
     }
 
     public boolean hasPermission(Location l, int i) {

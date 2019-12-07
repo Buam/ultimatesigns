@@ -6,12 +6,43 @@
 
     <groupId>com.hotmail.commanderchaos22</groupId>
     <artifactId>UltimateSigns</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>1.5.0</version>
 
     <properties>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
     </properties>
+
+    <build>
+        <plugins>
+            <plugin>
+                <artifactId>maven-jar-plugin</artifactId>
+                <groupId>org.apache.maven.plugins</groupId>
+                <configuration>
+                    <finalName>UltimateSigns</finalName>
+                    <outputDirectory>D:/Test_Servers/1.14.4/plugins</outputDirectory>
+                </configuration>
+            </plugin>
+        </plugins>
+
+        <!-- Version -->
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+                <includes>
+                    <include>**/plugin.yml</include>
+                </includes>
+            </resource>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>false</filtering>
+                <excludes>
+                    <exclude>**/plugin.yml</exclude>
+                </excludes>
+            </resource>
+        </resources>
+    </build>
 
     <repositories>
         <!-- Spigot -->

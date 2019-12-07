@@ -19,7 +19,7 @@ import java.util.Set;
 
 public class TypeManager {
 
-    private static HashSet<Class<? extends Number>> numberTypes = Sets.newHashSet(PlayersOnline.class, SignPlayerLastUsed.class, PlayerLevel.class);
+    private static HashSet<Class<? extends Number>> numberTypes = Sets.newHashSet(PlayersOnline.class, SignPlayerLastUsed.class, SignPlayerUses.class, PlayerLevel.class);
     private static HashSet<Class<? extends Text>> textTypes = Sets.newHashSet(PlayerName.class, PlayerDisplayName.class, PlayerUUID.class, PlayerWorldName.class);
     private static HashSet<Class<? extends Boolean>> booleanTypes = Sets.newHashSet();
     private static HashSet<Class<? extends Number>> requiresVault = Sets.newHashSet(PlayerBalance.class);

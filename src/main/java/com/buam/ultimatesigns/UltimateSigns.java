@@ -61,6 +61,11 @@ public class UltimateSigns extends JavaPlugin {
     public static CommandUS command;
 
     /**
+     * When the Sign Uses where last reset (seconds since 1/1/1970)
+     */
+    public long lastReset;
+
+    /**
      * Gets called when the plugin is enabled, initializes all above variables
      * and adds a Packet Listener that listens for message packets that block the packet if
      * the player who it is send to is in the messagesBlocked Set
@@ -110,13 +115,16 @@ public class UltimateSigns extends JavaPlugin {
         new SignManager(getDataFolder() + Constants.DATA_FILE);
 
         // Schedule Sign Update task
-        Bukkit.getScheduler().scheduleSyncRepeatingTask(this, () -> SignUpdater.updateAllSigns(), 0, Config.i.i(Constants.SIGN_UPDATE_TIME));
+        Bukkit.getScheduler().scheduleSyncRepeatingTask(this, SignUpdater::updateAllSigns, 0, Config.i.i(Constants.SIGN_UPDATE_TIME));
+
+        // Schedule Sign Uses Reset Task
+        if(Config.i.i(Constants.SIGN_USES_RESET_TIME) != 0) Bukkit.getScheduler().scheduleSyncRepeatingTask(this, () -> SignManager.i.resetSignUses(), Config.i.i(Constants.SIGN_USES_RESET_TIME), Config.i.i(Constants.SIGN_USES_RESET_TIME));
 
         // Create commands folder if it doesn't exist
         File commandsFolder = new File(getDataFolder() + Config.i.s(Constants.COMMANDS_SUBFOLDER));
         commandsFolder.mkdirs();
 
-        Bukkit.getScheduler().scheduleSyncDelayedTask(this, () -> checkForUpdates());
+        Bukkit.getScheduler().scheduleSyncDelayedTask(this, this::checkForUpdates);
     }
 
     /**
@@ -133,7 +141,10 @@ public class UltimateSigns extends JavaPlugin {
 
         // Re-register sign update task
         Bukkit.getScheduler().cancelTasks(this);
-        Bukkit.getScheduler().scheduleSyncRepeatingTask(this, () -> SignUpdater.updateAllSigns(), 0, Config.i.i(Constants.SIGN_UPDATE_TIME));
+        Bukkit.getScheduler().scheduleSyncRepeatingTask(this, SignUpdater::updateAllSigns, 0, Config.i.i(Constants.SIGN_UPDATE_TIME));
+
+        // Schedule Sign Uses Reset Task
+        Bukkit.getScheduler().scheduleSyncRepeatingTask(this, () -> SignManager.i.resetSignUses(), 0, Constants.SIGN_USES_RESET_CHECK_INTERVAL);
 
         // Also reload signs (save and load them)
         SignManager.i.saveSigns();

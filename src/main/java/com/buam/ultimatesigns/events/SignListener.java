@@ -148,9 +148,17 @@ public class SignListener implements Listener {
                             if(s.contains("(left)")) hasLeft = true;
                         }
                         if(!e.getPlayer().isSneaking() || !left) {
+                            // Save the time of this use
                             SignManager.i.saveSignTime(e.getPlayer(), e.getClickedBlock().getLocation());
+
+                            // Increase click counter
+                            SignManager.i.saveUse(e.getPlayer(), e.getClickedBlock().getLocation());
+
+                            // Start language engine
                             Language l = new Language(commands.stream().map(String::new).toArray(String[]::new), left);
                             l.executeAll(e.getPlayer(), SignManager.i.signAt(e.getClickedBlock().getLocation()));
+
+                            // Cancel event if left clicked so the sign won't be destroyed
                             if(left && hasLeft) e.setCancelled(true);
                         }
                     } else {
