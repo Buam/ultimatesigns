@@ -18,6 +18,7 @@
             <plugin>
                 <artifactId>maven-jar-plugin</artifactId>
                 <groupId>org.apache.maven.plugins</groupId>
+                <version>3.2.0</version>
                 <configuration>
                     <finalName>UltimateSigns</finalName>
                     <outputDirectory>D:/Test_Servers/1.14.4/plugins</outputDirectory>
