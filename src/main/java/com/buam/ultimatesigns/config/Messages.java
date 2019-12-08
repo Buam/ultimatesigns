@@ -1,6 +1,7 @@
 package com.buam.ultimatesigns.config;
 
 import com.buam.ultimatesigns.SignHelper;
+import org.bukkit.ChatColor;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -28,7 +29,7 @@ public class Messages {
     private void createConfig(JavaPlugin plugin) {
         configFile = new File(plugin.getDataFolder(), "messages.yml");
         if(!configFile.exists()) {
-            configFile.getParentFile().mkdirs();
+            if(!configFile.getParentFile().mkdirs()) System.out.println(ChatColor.RED + "[UltimateSigns] failed to create messages.yml");
             plugin.saveResource("messages.yml", false);
         }
 

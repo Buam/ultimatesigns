@@ -21,6 +21,7 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -29,24 +30,24 @@ import java.util.Set;
 
 public class CommandUS implements CommandExecutor {
 
-    public CMDBase cmdBase;
-    public CMDAdd cmdAdd;
-    public CMDRemove cmdRemove;
-    public CMDEdit cmdEdit;
-    public CMDFile cmdFile;
+    public final CMDBase cmdBase;
+    public final CMDAdd cmdAdd;
+    public final CMDRemove cmdRemove;
+    public final CMDEdit cmdEdit;
+    public final CMDFile cmdFile;
 
-    public PMBase pmBase;
-    public PMAdd pmAdd;
-    public PMRemove pmRemove;
-    public PMEdit pmEdit;
+    public final PMBase pmBase;
+    public final PMAdd pmAdd;
+    public final PMRemove pmRemove;
+    public final PMEdit pmEdit;
 
-    public EditCmd editCmd;
-    public CopyPasteCmd copyPasteCmd;
-    public ReloadCmd reloadCmd;
+    public final EditCmd editCmd;
+    public final CopyPasteCmd copyPasteCmd;
+    public final ReloadCmd reloadCmd;
 
-    public Map<Player, SignState> states = new HashMap<>();
+    public final Map<Player, SignState> states = new HashMap<>();
 
-    public Set<Player> inEditMode = new HashSet<>();
+    public final Set<Player> inEditMode = new HashSet<>();
 
     public CommandUS(JavaPlugin plugin) {
         cmdBase = new CMDBase();
@@ -74,7 +75,7 @@ public class CommandUS implements CommandExecutor {
     }
 
     @Override
-    public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
+    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command cmd, @NotNull String label, String[] args) {
 
         if(args.length > 0) {
             // There are arguments, Command Classes are handling the rest
@@ -88,14 +89,14 @@ public class CommandUS implements CommandExecutor {
                     pmBase.onCommand(sender, args);
                     break;
                 case "edit":
-                    editCmd.onCommand(sender, args);
+                    editCmd.onCommand(sender);
                     break;
                 case "copy":
                 case "paste":
                     copyPasteCmd.onCommand(sender, args);
                     break;
                 case "reload":
-                    reloadCmd.onCommand(sender, args);
+                    reloadCmd.onCommand(sender);
                     break;
                 default:
                     // Unknown subcommand, show help

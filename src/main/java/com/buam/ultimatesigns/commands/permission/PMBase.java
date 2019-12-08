@@ -17,14 +17,14 @@ Includes all arguments, gets created and called when args[0] = "permission"
  */
 public class PMBase {
 
-    public boolean onCommand(CommandSender sender, String[] args) {
+    public void onCommand(CommandSender sender, String[] args) {
         // Not a sub command for the console so:
         if(sender instanceof Player) {
             Player player = (Player) sender;
 
             if(!player.hasPermission(Constants.PERMISSION_PERMISSION)) {
                 player.sendMessage(Messages.i.s("no-permission-message"));
-                return true;
+                return;
             }
 
             if (args.length == 1) {
@@ -33,7 +33,7 @@ public class PMBase {
                 Block block = player.getTargetBlock(null, 40);
                 // Only if it is a sign. If it is not yet registered, register it
                 if(Constants.isSign(block.getType())) {
-                    if(!SignManager.i.isUltimateSign(block.getLocation())) SignManager.i.addSign(block.getLocation());
+                    if(!SignManager.i.isUltimateSign(block.getLocation())) SignManager.i.addSign(block.getLocation(), player.getUniqueId());
                     listPermissions(player, block);
                 } else {
                     player.sendMessage(UltimateSigns.PREFIX + Messages.i.s("look-at-sign-message"));
@@ -41,11 +41,13 @@ public class PMBase {
             } else if(args.length >= 2) {
                 switch(args[1]) {
                     case "add":
-                        return UltimateSigns.command.pmAdd.onCommand(player);
+                        UltimateSigns.command.pmAdd.onCommand(player);
+                        return;
                     case "remove":
-                        return UltimateSigns.command.pmRemove.onCommand(player);
+                        UltimateSigns.command.pmRemove.onCommand(player);
+                        return;
                     case "edit":
-                        return UltimateSigns.command.pmEdit.onCommand(player);
+                        UltimateSigns.command.pmEdit.onCommand(player);
                 }
             } else {
                 usage(player);
@@ -54,7 +56,6 @@ public class PMBase {
             sender.sendMessage(Messages.i.s("only-players-message"));
         }
 
-        return true;
     }
 
 
@@ -85,7 +86,7 @@ public class PMBase {
 
     /**
      * Sends a usage message on how to use this command
-     * @param player
+     * @param player The player to send the message to
      */
     private static void usage(Player player) {
         player.sendMessage(ChatColor.RED + "Usage: /ultimatesigns [subcommand]");

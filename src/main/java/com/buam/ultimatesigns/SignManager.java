@@ -3,9 +3,7 @@ package com.buam.ultimatesigns;
 import com.buam.ultimatesigns.config.Config;
 import com.buam.ultimatesigns.extras.SignUpdater;
 import com.buam.ultimatesigns.files.CSVFile;
-import jdk.vm.ci.meta.Constant;
 import org.bukkit.Bukkit;
-import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.block.Block;
@@ -13,7 +11,6 @@ import org.bukkit.block.Sign;
 import org.bukkit.entity.Player;
 
 import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
 
 public class SignManager {
     /**
@@ -24,23 +21,23 @@ public class SignManager {
     /**
      * A set of signs across the whole server (and all its worlds)
      */
-    private Set<USign> signs;
+    private final Set<USign> signs;
 
     /**
      * A set of times when a sign was last used by a player
      * currently unused
      */
-    private Set<SignTime> lastUsed;
+    private final Set<SignTime> times;
 
     /**
      * A set of times a sign was used. Will be resetted after a configurable amount of time
      */
-    private Set<SignUses> uses;
+    private final Set<SignUses> uses;
 
     /**
      * The path were the data.csv file lies
      */
-    private String data_path;
+    private final String data_path;
 
     public SignManager(String data_file_path) {
         i = this;
@@ -48,19 +45,13 @@ public class SignManager {
 
         signs = new HashSet<>();
         uses = new HashSet<>();
-        lastUsed = new HashSet<>();
+        times = new HashSet<>();
 
         loadSigns();
     }
 
     public Set<USign> getAllSigns() {
         return signs;
-    }
-
-    public void addSign(Location l) {
-        if(Constants.isSign(l.getBlock().getType()) && !containsSignAt(l)) {
-            signs.add(new USign(l.getBlock(), new ArrayList<>()));
-        }
     }
 
     public void addSign(Location l, UUID owner) {
@@ -126,17 +117,21 @@ public class SignManager {
     }
 
     public void saveSignTime(Player p, Location l) {
-        lastUsed.removeIf(sign -> sign.getPlayerID().equals(p.getUniqueId()) && sign.getLocation().equals(l));
-        lastUsed.add(new SignTime(p.getUniqueId(), l));
-    }
+        // times.removeIf(sign -> sign.getPlayerID().equals(p.getUniqueId()) && sign.getLocation().equals(l));
+        // times.add(new SignTime(p.getUniqueId(), l));
+        for(SignTime st : times) {
+            if(st.equals(new SignTime(p.getUniqueId(), l))) {
+                st.now();
+                return;
+            }
+        }
 
-    private void removeSignTime(Player p, Location l) {
-        lastUsed.remove(new SignTime(p.getUniqueId(), l, 1000000000L));
-    } // Last argument doesn't matter because of the custom equals() method
+        times.add(new SignTime(p.getUniqueId(), l));
+    }
 
     private void removeSignAt(Location l) {
         signs.removeIf(sign -> sign.getBlock().getLocation().equals(l));
-        lastUsed.removeIf(use -> use.getLocation().equals(l));
+        times.removeIf(use -> use.getLocation().equals(l));
         uses.removeIf(use -> use.getSign().equals(l));
     }
 
@@ -165,6 +160,7 @@ public class SignManager {
      * @param l The location of the block to check
      * @return The sign if one was found that fits the criteria
      */
+    @SuppressWarnings("deprecation")
     public USign isRelative(Location l) {
         for(USign s : signs) {
             // Returns s if l is the location of a block that is a sign or a block that a sign is attached to
@@ -181,17 +177,13 @@ public class SignManager {
     public void loadSigns() {
         SignData data = CSVFile.read(data_path);
 
-        System.out.println("SIGNS: " + data.signs.size());
-        System.out.println("USES: " + data.uses.size());
-        System.out.println("TIMES: " + data.times.size());
-
         signs.clear();
         uses.clear();
-        lastUsed.clear();
+        times.clear();
 
         signs.addAll(data.signs);
         uses.addAll(data.uses);
-        lastUsed.addAll(data.times);
+        times.addAll(data.times);
     }
 
     /**
@@ -214,7 +206,7 @@ public class SignManager {
     }
 
     public SignTime getLastUsed(Player player, USign sign) {
-        for(SignTime st : lastUsed) {
+        for(SignTime st : times) {
             if(st.equals(new SignTime(player.getUniqueId(), sign.getLocation()))) {
                 return st;
             }
@@ -223,7 +215,7 @@ public class SignManager {
     }
 
     public Set<SignTime> getAllSignTimes() {
-        return lastUsed;
+        return times;
     }
 
     public Set<SignUses> getAllSignUses() {
@@ -239,8 +231,6 @@ public class SignManager {
         }
         uses.add(new SignUses(player.getUniqueId(), location, 1));
     }
-
-
 
     public void resetSignUses() {
         long currTime = System.currentTimeMillis();
@@ -277,8 +267,9 @@ public class SignManager {
     }
 
     private void setSign(Location toSet, Location original) {
+        UUID owner = signAt(toSet).getOwner();
         signs.remove(signAt(toSet));
-        signs.add(new USign(toSet, new ArrayList<>(signAt(original).getCommands()), new ArrayList<>(signAt(original).getPermissions())));
+        signs.add(new USign(toSet, new ArrayList<>(signAt(original).getCommands()), new ArrayList<>(signAt(original).getPermissions()), owner));
     }
 
     public void setSign(Block b, Block original) {

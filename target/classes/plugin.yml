@@ -1,8 +1,8 @@
 name: UltimateSigns
 description: The only sign plugin you will ever need!
 author: Buam
-version: ${project.version}
-api-version: "1.14"
+version: 1.5.0
+api-version: 1.14
 main: com.buam.ultimatesigns.UltimateSigns
 softdepend: [ProtocolLib, Vault]
 commands:

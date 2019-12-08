@@ -1,16 +1,14 @@
 package com.buam.ultimatesigns;
 
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.entity.Player;
 
 import java.util.UUID;
 
 public class SignTime {
 
     private long millisTime;
-    private Location sign;
-    private UUID player;
+    private final Location sign;
+    private final UUID player;
 
     public SignTime(UUID p, Location sign) {
         millisTime = System.currentTimeMillis();
@@ -36,20 +34,12 @@ public class SignTime {
         return difference(System.currentTimeMillis());
     }
 
-    public USign getSign() {
-        return SignManager.i.signAt(sign);
-    }
-
     public Location getLocation() {
         return sign;
     }
 
     public long getMillisTime() {
         return millisTime;
-    }
-
-    public Player getPlayer() {
-        return Bukkit.getPlayer(player);
     }
 
     public UUID getPlayerID() {
@@ -59,9 +49,7 @@ public class SignTime {
     @Override
     public boolean equals(Object other) {
         if(other instanceof SignTime) {
-            if(((SignTime) other).getLocation().equals(getLocation()) && ((SignTime) other).getPlayerID().equals(getPlayerID())) {
-                return true;
-            }
+            return ((SignTime) other).getLocation().equals(getLocation()) && ((SignTime) other).getPlayerID().equals(getPlayerID());
         }
         return false;
     }

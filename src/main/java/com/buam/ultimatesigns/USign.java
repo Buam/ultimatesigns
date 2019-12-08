@@ -4,6 +4,7 @@ import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -13,7 +14,7 @@ public class USign {
     /**
      * The location of this sign
      */
-    private Location l;
+    private final Location l;
 
     /**
      * An ordered list of all the commands that are added to the sign
@@ -23,23 +24,19 @@ public class USign {
     /**
      * An unordered list of all permissions that a player requires to use this sign
      */
-    private List<String> permissions;
+    private final List<String> permissions;
 
     /**
      * The unique Identifier of the Player who owns this sign
      */
     private UUID owner;
 
-    public USign(Block block, List<String> commands) {
-        this.l = block.getLocation();
-        this.commands = commands;
-        this.permissions = new ArrayList<>();
+    public USign(Location loc, List<String> commands, @Nullable UUID owner) {
+        this(loc, commands, new ArrayList<>(), owner);
     }
 
-    public USign(Location location, List<String> commands, List<String> permissions) {
-        this.l = location;
-        this.commands = commands;
-        this.permissions = permissions;
+    public USign(Block loc, List<String> commands, @Nullable UUID owner) {
+        this(loc.getLocation(), commands, owner);
     }
 
     public USign(Location location, List<String> commands, List<String> permissions, UUID owner) {
@@ -110,9 +107,7 @@ public class USign {
     @Override
     public boolean equals(Object other) {
         if(other instanceof USign) {
-            if(((USign) other).getLocation().equals(getLocation())) {
-                return true;
-            }
+            return ((USign) other).getLocation().equals(getLocation());
         }
         return false;
     }

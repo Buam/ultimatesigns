@@ -23,6 +23,7 @@ import org.bukkit.event.player.PlayerChangedWorldEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 import java.util.UUID;
 
@@ -31,26 +32,28 @@ public class SignListener implements Listener {
     /**
      * Gets called when a block breaks. Checks if that block is related to a registered sign and checks
      * if the player who broke it is even allowed to break that block
-     * @param e
+     * @param e The event
      */
     @EventHandler
     public void onBlockBreak(BlockBreakEvent e) {
         // Remove the sign from the list if it's the owner
         Block b = e.getBlock();
 
-        USign s = SignManager.i.isRelative(b.getLocation());
+        if(Constants.isSign(b.getType())) {
+            USign s = SignManager.i.isRelative(b.getLocation());
 
-        if(s != null) {
-            Player player = e.getPlayer();
+            if(s != null) {
+                Player player = e.getPlayer();
 
-            // It is a sign, or the block that is going to break has a sign attached to it
-            if(s.getOwner().equals(player.getUniqueId()) || player.hasPermission(Constants.BREAK_PERMISSION) || !Config.i.b("protect-signs")) {
-                // The sign was rightfully broken by its owner
-                SignManager.i.removeSign(b.getLocation());
-            } else {
-                // Someone else tried to remove this sign, even though it was not his
-                player.sendMessage(Messages.i.s("not-your-sign-message"));
-                e.setCancelled(true);
+                // It is a sign, or the block that is going to break has a sign attached to it
+                if(s.getOwner().equals(player.getUniqueId()) || player.hasPermission(Constants.BREAK_PERMISSION) || !Config.i.b("protect-signs")) {
+                    // The sign was rightfully broken by its owner
+                    SignManager.i.removeSign(s.getLocation());
+                } else {
+                    // Someone else tried to remove this sign, even though it was not his
+                    player.sendMessage(Messages.i.s("not-your-sign-message"));
+                    e.setCancelled(true);
+                }
             }
         }
     }
@@ -58,7 +61,7 @@ public class SignListener implements Listener {
     /**
      * Gets called when the text of a sign changes
      * Updates that sign for all players directly
-     * @param e
+     * @param e The event
      */
     @EventHandler
     public void onSignChange(SignChangeEvent e) {
@@ -75,7 +78,7 @@ public class SignListener implements Listener {
     /**
      * Gets called when a player joins the server
      * Updates all signs after 2 ticks
-     * @param e
+     * @param e The event
      */
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent e) {
@@ -90,7 +93,7 @@ public class SignListener implements Listener {
         // Of course it is configurable
         if(Config.i.b("dev-join-notify") && e.getPlayer().getUniqueId().equals(UUID.fromString("576a9d57-abea-4e86-bd0e-5971d2b4bb77"))) {
             for(Player p : Bukkit.getOnlinePlayers()) {
-                if(p.hasPermission("ultimatesigns.break")) {
+                if(p.hasPermission("ultimatesigns.admin")) {
                     p.sendMessage(UltimateSigns.PREFIX + "A developer (" + e.getPlayer().getName() + ") has just joined the server!");
                 }
             }
@@ -100,28 +103,28 @@ public class SignListener implements Listener {
     /**
      * Gets called when a player changes the world
      * Updates all signs in that world for that player
-     * @param e
+     * @param e The event
      */
     @EventHandler(priority = EventPriority.LOWEST)
     public void onPlayerChangeWorld(PlayerChangedWorldEvent e) {
         // Update signs when a player changes world (needed for [world])
-        Bukkit.getScheduler().scheduleSyncDelayedTask(UltimateSigns.i, () -> {
-            SignUpdater.handleSignsInWorldForPlayer(e.getPlayer().getWorld(), e.getPlayer());
-        }, 2);
+        Bukkit.getScheduler().scheduleSyncDelayedTask(UltimateSigns.i, () -> SignUpdater.handleSignsInWorldForPlayer(e.getPlayer().getWorld(), e.getPlayer()), 2);
     }
 
     /**
      * Gets called when the player left or right clicks on a sign
      * Handles commands as well as sign editing
-     * @param e
-     * @throws IllegalAccessException
-     * @throws InstantiationException
-     * @throws InvalidArgumentsException
+     * @param e The event
+     * @throws IllegalAccessException Gets thrown by the language
+     * @throws InstantiationException Gets thrown by the language
+     * @throws InvalidArgumentsException Gets thrown by the language
      */
     @EventHandler
-    public void onPlayerInteract(PlayerInteractEvent e) throws IllegalAccessException, InstantiationException, InvalidArgumentsException {
+    public void onPlayerInteract(PlayerInteractEvent e) throws IllegalAccessException, InstantiationException, InvalidArgumentsException, NoSuchMethodException, InvocationTargetException {
         if(e.getAction() != Action.RIGHT_CLICK_BLOCK && e.getAction() != Action.LEFT_CLICK_BLOCK) return;
         if (Constants.isSign(e.getClickedBlock().getType())) {
+            SignUpdater.handleSignUpdateForPlayer(e.getPlayer(), e.getClickedBlock());
+
             if (e.getPlayer().isSneaking() && e.getAction().equals(Action.RIGHT_CLICK_BLOCK) && UltimateSigns.command.inEditMode.contains(e.getPlayer())) {
 
                 // Edit the sign
@@ -145,7 +148,10 @@ public class SignListener implements Listener {
                         boolean hasLeft = false;
                         List<String> commands = SignManager.i.signAt(e.getClickedBlock().getLocation()).getCommands();
                         for(String s : commands) {
-                            if(s.contains("(left)")) hasLeft = true;
+                            if (s.contains("(left)")) {
+                                hasLeft = true;
+                                break;
+                            }
                         }
                         if(!e.getPlayer().isSneaking() || !left) {
                             // Save the time of this use
@@ -171,8 +177,8 @@ public class SignListener implements Listener {
 
     /**
      * Helper method to open the sign editor using Protocol
-     * @param s
-     * @param p
+     * @param s The sign
+     * @param p The player
      */
     public void openEditor(Sign s, Player p) {
         UltimateSigns.signEditor.open(p, s.getLocation(), null, (player, lines) -> {

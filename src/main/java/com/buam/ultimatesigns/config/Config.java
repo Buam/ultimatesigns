@@ -20,12 +20,12 @@ public class Config {
     /**
      * FileConfiguration object which can be used to read and write values
      */
-    private FileConfiguration config;
+    private final FileConfiguration config;
 
     /**
      * A set of all custom variables defined
      */
-    private Set<Variable> variables;
+    private final Set<Variable> variables;
 
     public Config(FileConfiguration config) {
         i = this;

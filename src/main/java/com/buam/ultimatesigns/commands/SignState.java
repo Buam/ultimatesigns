@@ -4,7 +4,7 @@ import org.bukkit.block.Block;
 
 public class SignState {
 
-    public Block block;
+    public final Block block;
     public ChatStates state;
     public int index;
 

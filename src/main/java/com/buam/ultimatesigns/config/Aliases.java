@@ -1,5 +1,6 @@
 package com.buam.ultimatesigns.config;
 
+import org.bukkit.ChatColor;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -15,7 +16,6 @@ public class Aliases {
 
     public static Aliases i;
 
-    private File configFile;
     private FileConfiguration config;
 
     public Aliases(JavaPlugin plugin) {
@@ -28,9 +28,9 @@ public class Aliases {
      * @param plugin The plugin
      */
     private void createConfig(JavaPlugin plugin) {
-        configFile = new File(plugin.getDataFolder(), "aliases.yml");
+        File configFile = new File(plugin.getDataFolder(), "aliases.yml");
         if(!configFile.exists()) {
-            configFile.getParentFile().mkdirs();
+            if(!configFile.getParentFile().mkdirs()) System.out.println(ChatColor.RED + "[UltimateSigns] failed to create aliases.yml");
             plugin.saveResource("aliases.yml", false);
         }
 

@@ -53,7 +53,7 @@ public class UltimateSigns extends JavaPlugin {
      * Gets populated with players that should not receive any messages.
      * Used by the (silent) command modifier
      */
-    public Set<Player> messagesBlocked = new HashSet<>();
+    public final Set<Player> messagesBlocked = new HashSet<>();
 
     /**
      * Static reference to the Main Command class (which handles all subcommands)
@@ -122,7 +122,7 @@ public class UltimateSigns extends JavaPlugin {
 
         // Create commands folder if it doesn't exist
         File commandsFolder = new File(getDataFolder() + Config.i.s(Constants.COMMANDS_SUBFOLDER));
-        commandsFolder.mkdirs();
+        if(!commandsFolder.mkdirs()) System.out.println(ChatColor.RED + "[UltimateSigns] Failed to create commands subfolder");
 
         Bukkit.getScheduler().scheduleSyncDelayedTask(this, this::checkForUpdates);
     }
@@ -144,7 +144,7 @@ public class UltimateSigns extends JavaPlugin {
         Bukkit.getScheduler().scheduleSyncRepeatingTask(this, SignUpdater::updateAllSigns, 0, Config.i.i(Constants.SIGN_UPDATE_TIME));
 
         // Schedule Sign Uses Reset Task
-        Bukkit.getScheduler().scheduleSyncRepeatingTask(this, () -> SignManager.i.resetSignUses(), 0, Constants.SIGN_USES_RESET_CHECK_INTERVAL);
+        if(Config.i.i(Constants.SIGN_USES_RESET_TIME) != 0) Bukkit.getScheduler().scheduleSyncRepeatingTask(this, () -> SignManager.i.resetSignUses(), 0, Constants.SIGN_USES_RESET_CHECK_INTERVAL);
 
         // Also reload signs (save and load them)
         SignManager.i.saveSigns();

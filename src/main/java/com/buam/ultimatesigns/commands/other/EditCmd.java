@@ -12,14 +12,14 @@ Includes all arguments, gets created and called when args[0] = "edit"
  */
 public class EditCmd {
 
-    public boolean onCommand(CommandSender sender, String[] args) {
+    public void onCommand(CommandSender sender) {
         // Not a sub command for the console so:
         if(sender instanceof Player) {
             Player player = (Player) sender;
 
             if(!player.hasPermission(Constants.EDIT_PERMISSION)) {
                 player.sendMessage(Messages.i.s("no-permission-message"));
-                return true;
+                return;
             }
 
             if(UltimateSigns.command.inEditMode.contains(player)) {
@@ -33,7 +33,6 @@ public class EditCmd {
             sender.sendMessage(Messages.i.s("only-players-message"));
         }
 
-        return true;
     }
 
 }

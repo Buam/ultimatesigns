@@ -6,6 +6,8 @@ import com.buam.ultimatesigns.lang.types.Boolean;
 import com.buam.ultimatesigns.lang.exceptions.InvalidArgumentsException;
 import org.bukkit.entity.Player;
 
+import java.lang.reflect.InvocationTargetException;
+
 public class IfNumberStatement extends Boolean {
 
     public boolean get(Object... args) {
@@ -39,7 +41,7 @@ public class IfNumberStatement extends Boolean {
     Takes in <number><operator><number>
     for example 2<3 or <online>=5
      */
-    public boolean get(String in, Player p, USign s) throws InvalidArgumentsException, InstantiationException, IllegalAccessException {
+    public boolean get(String in, Player p, USign s) throws InvalidArgumentsException, InstantiationException, IllegalAccessException, NoSuchMethodException, InvocationTargetException {
 
         in = TypeManager.replaceNumbers(in);
 
