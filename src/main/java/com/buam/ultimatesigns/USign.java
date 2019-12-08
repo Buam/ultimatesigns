@@ -4,7 +4,6 @@ import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 
-import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -31,7 +30,7 @@ public class USign {
      */
     private final UUID owner;
 
-    public USign(Location loc, List<String> commands, @Nullable UUID owner) {
+    public USign(Location loc, List<String> commands, UUID owner) {
         this(loc, commands, new ArrayList<>(), owner);
     }
 

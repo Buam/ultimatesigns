@@ -6,7 +6,6 @@ import com.google.common.net.HttpHeaders;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import javax.annotation.Nonnull;
 import javax.net.ssl.HttpsURLConnection;
 import java.io.IOException;
 import java.net.HttpURLConnection;
@@ -41,16 +40,16 @@ public class UpdateCheck {
      */
     private BiConsumer<VersionResponse, String> versionResponse;
 
-    private UpdateCheck(@Nonnull JavaPlugin javaPlugin) {
+    private UpdateCheck(JavaPlugin javaPlugin) {
         this.javaPlugin = Objects.requireNonNull(javaPlugin, "javaPlugin");
         this.currentVersion = javaPlugin.getDescription().getVersion();
     }
 
-    public static UpdateCheck of(@Nonnull JavaPlugin javaPlugin) {
+    public static UpdateCheck of(JavaPlugin javaPlugin) {
         return new UpdateCheck(javaPlugin);
     }
 
-    public UpdateCheck currentVersion(@Nonnull String currentVersion) {
+    public UpdateCheck currentVersion(String currentVersion) {
         this.currentVersion = currentVersion;
         return this;
     }
@@ -60,7 +59,7 @@ public class UpdateCheck {
         return this;
     }
 
-    public UpdateCheck handleResponse(@Nonnull BiConsumer<VersionResponse, String> versionResponse) {
+    public UpdateCheck handleResponse(BiConsumer<VersionResponse, String> versionResponse) {
         this.versionResponse = versionResponse;
         return this;
     }

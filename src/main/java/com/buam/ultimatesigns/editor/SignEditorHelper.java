@@ -10,7 +10,6 @@ import com.comphenix.protocol.events.PacketEvent;
 import com.comphenix.protocol.wrappers.BlockPosition;
 import com.comphenix.protocol.wrappers.WrappedBlockData;
 import com.comphenix.protocol.wrappers.WrappedChatComponent;
-import io.netty.util.internal.ConcurrentSet;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -53,7 +52,7 @@ public class SignEditorHelper {
         protocolManager = ProtocolLibrary.getProtocolManager();
         listeners = new ConcurrentHashMap<>();
         signLocations = new ConcurrentHashMap<>();
-        expectsSignUpdate = new ConcurrentSet<>();
+        expectsSignUpdate = new HashSet<>();
 
         ProtocolLibrary.getProtocolManager().addPacketListener(
                 new PacketAdapter(plugin, PacketType.Play.Client.UPDATE_SIGN) {

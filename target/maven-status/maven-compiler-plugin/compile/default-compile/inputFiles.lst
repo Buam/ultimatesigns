@@ -22,6 +22,7 @@ C:\Users\svens\IdeaProjects\UltimateSigns\src\main\java\com\buam\ultimatesigns\c
 C:\Users\svens\IdeaProjects\UltimateSigns\src\main\java\com\buam\ultimatesigns\commands\cmd\sub\CMDAdd.java
 C:\Users\svens\IdeaProjects\UltimateSigns\src\main\java\com\buam\ultimatesigns\commands\other\CopyPasteCmd.java
 C:\Users\svens\IdeaProjects\UltimateSigns\src\main\java\com\buam\ultimatesigns\Constants.java
+C:\Users\svens\IdeaProjects\UltimateSigns\src\main\java\com\buam\ultimatesigns\api\Variable.java
 C:\Users\svens\IdeaProjects\UltimateSigns\src\main\java\com\buam\ultimatesigns\lang\variables\IfNumberStatement.java
 C:\Users\svens\IdeaProjects\UltimateSigns\src\main\java\com\buam\ultimatesigns\USign.java
 C:\Users\svens\IdeaProjects\UltimateSigns\src\main\java\com\buam\ultimatesigns\lang\variables\SignPlayerUses.java
@@ -30,6 +31,7 @@ C:\Users\svens\IdeaProjects\UltimateSigns\src\main\java\com\buam\ultimatesigns\c
 C:\Users\svens\IdeaProjects\UltimateSigns\src\main\java\com\buam\ultimatesigns\commands\CommandUS.java
 C:\Users\svens\IdeaProjects\UltimateSigns\src\main\java\com\buam\ultimatesigns\SignHelper.java
 C:\Users\svens\IdeaProjects\UltimateSigns\src\main\java\com\buam\ultimatesigns\lang\variables\PlayersOnline.java
+C:\Users\svens\IdeaProjects\UltimateSigns\src\main\java\com\buam\ultimatesigns\api\VariableType.java
 C:\Users\svens\IdeaProjects\UltimateSigns\src\main\java\com\buam\ultimatesigns\UltimateSigns.java
 C:\Users\svens\IdeaProjects\UltimateSigns\src\main\java\com\buam\ultimatesigns\config\Aliases.java
 C:\Users\svens\IdeaProjects\UltimateSigns\src\main\java\com\buam\ultimatesigns\editor\SignEditorHelper.java
