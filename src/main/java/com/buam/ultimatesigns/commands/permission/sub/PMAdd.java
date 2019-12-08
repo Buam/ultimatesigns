@@ -49,7 +49,7 @@ public class PMAdd implements Listener {
                 } else {
                     // Add permission
                     SignManager.i.addPermission(signState.block.getLocation(), message);
-                    player.sendMessage(UltimateSigns.PREFIX + Messages.i.s("added-permission-message") + message);
+                    player.sendMessage(UltimateSigns.PREFIX + Messages.i.s("added-permission-message", message));
 
                     // Play a cool particle effect!
                     ParticleHelper.p(signState.block.getLocation());

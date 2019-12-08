@@ -74,10 +74,12 @@ public class CMDEdit implements Listener {
                     }
                 } else if (state.state == ChatStates.EDIT_COMMAND) {
 
+                    String oldCommand = SignManager.i.signAt(state.block.getLocation()).getCommands().get(state.index);
+
                     // This player typed in the new command, the state now has an index assigned
                     SignManager.i.editCommand(state.block.getLocation(), state.index, message);
 
-                    player.sendMessage(UltimateSigns.PREFIX + Messages.i.s("changed-command-message"));
+                    player.sendMessage(UltimateSigns.PREFIX + Messages.i.s("changed-command-message", oldCommand, message));
 
                     // Remove the player from the states list, he's done
                     UltimateSigns.command.states.remove(player);

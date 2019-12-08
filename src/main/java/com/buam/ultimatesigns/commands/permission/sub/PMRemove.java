@@ -60,14 +60,14 @@ public class PMRemove implements Listener {
                         if(SignManager.i.hasPermission(signState.block.getLocation(), index)) {
 
                             SignManager.i.removePermission(signState.block.getLocation(), index);
-                            player.sendMessage(UltimateSigns.PREFIX + Messages.i.s("removed-permission-message") + message);
+                            player.sendMessage(UltimateSigns.PREFIX + Messages.i.s("removed-permission-message", message));
 
                             UltimateSigns.command.states.remove(player);
 
                             // Play a cool particle effect!
                             ParticleHelper.p(signState.block.getLocation());
                         } else {
-                            player.sendMessage(UltimateSigns.PREFIX + Messages.i.s("no-permission-message"));
+                            player.sendMessage(UltimateSigns.PREFIX + Messages.i.s("sign-no-permission-message", index));
                         }
 
                     } catch (NumberFormatException exc) {

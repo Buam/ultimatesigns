@@ -74,10 +74,12 @@ public class PMEdit implements Listener {
                     }
                 } else if (state.state == ChatStates.EDIT_PERMISSION) {
 
+                    String oldPermission = SignManager.i.signAt(state.block.getLocation()).getPermissions().get(state.index);
+
                     // This player typed in the new command, the state now has an index assigned
                     SignManager.i.editPermission(state.block.getLocation(), state.index, message);
 
-                    player.sendMessage(UltimateSigns.PREFIX + Messages.i.s("changed-permission-message"));
+                    player.sendMessage(UltimateSigns.PREFIX + Messages.i.s("changed-permission-message", oldPermission, message));
 
                     // Remove the player from the states list, he's done
                     UltimateSigns.command.states.remove(player);

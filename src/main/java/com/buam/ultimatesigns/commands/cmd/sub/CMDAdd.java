@@ -58,7 +58,7 @@ public class CMDAdd implements Listener {
 
                     // Add command
                     SignManager.i.addCommand(signState.block.getLocation(), message);
-                    player.sendMessage(UltimateSigns.PREFIX + Messages.i.s("added-command-message") + message);
+                    player.sendMessage(UltimateSigns.PREFIX + Messages.i.s("added-command-message", message));
 
                     // Play a cool particle effect!
                     ParticleHelper.p(signState.block.getLocation());

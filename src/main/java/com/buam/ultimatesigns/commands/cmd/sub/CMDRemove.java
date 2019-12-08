@@ -60,14 +60,14 @@ public class CMDRemove implements Listener {
                         if(SignManager.i.hasCommand(signState.block.getLocation(), index)) {
 
                             SignManager.i.removeCommand(signState.block.getLocation(), index);
-                            player.sendMessage(UltimateSigns.PREFIX + Messages.i.s("removed-command-message") + message);
+                            player.sendMessage(UltimateSigns.PREFIX + Messages.i.s("removed-command-message", message));
 
                             UltimateSigns.command.states.remove(player);
 
                             // Play a cool particle effect!
                             ParticleHelper.p(signState.block.getLocation());
                         } else {
-                            player.sendMessage(UltimateSigns.PREFIX + Messages.i.s("no-command-message"));
+                            player.sendMessage(UltimateSigns.PREFIX + Messages.i.s("sign-no-command-message", index));
                         }
 
                     } catch (NumberFormatException exc) {

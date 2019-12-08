@@ -22,8 +22,14 @@ public class Messages {
         createConfig(plugin);
     }
 
-    public String s(final String key) {
-        return SignHelper.translateColors(config.getString(key));
+    public String s(final String key, final Object... args) {
+        String s = config.getString(key);
+
+        for(int i = 0; i < args.length; i++) {
+            s.replace("%" + (i + 1), args[i].toString());
+        }
+
+        return SignHelper.translateColors(s);
     }
 
     private void createConfig(final JavaPlugin plugin) {
