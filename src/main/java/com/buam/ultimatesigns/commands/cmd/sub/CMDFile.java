@@ -15,7 +15,7 @@ import java.io.IOException;
 
 public class CMDFile {
 
-    public boolean onCommand(Player player, String[] args) {
+    public void onCommand(final Player player, final String[] args) {
 
         if(args.length >= 3) {
             Block target = player.getTargetBlockExact(40);
@@ -23,15 +23,15 @@ public class CMDFile {
             // If it is not a sign, don't do anything
             if(!Constants.isSign(target.getType())) {
                 player.sendMessage(UltimateSigns.PREFIX + Messages.i.s("look-at-sign-message"));
-                return true;
+                return;
             }
 
             // If the sign is not yet registered, do so
-            if(SignManager.i.isUltimateSign(target.getLocation())) SignManager.i.addSign(target.getLocation());
+            if(SignManager.i.isUltimateSign(target.getLocation())) SignManager.i.addSign(target.getLocation(), player.getUniqueId());
 
             // Get file name
             StringBuilder sb = new StringBuilder();
-            for(int i = 2; i<args.length; i++) {
+            for(int i = 2; i < args.length; i++) {
                 sb.append(args[i]).append(" ");
             }
             String file = sb.toString().trim();
@@ -51,8 +51,6 @@ public class CMDFile {
         } else {
             player.sendMessage(UltimateSigns.PREFIX + "Usage: /ultimatesigns cmd file <filename>");
         }
-
-        return true;
     }
 
 }

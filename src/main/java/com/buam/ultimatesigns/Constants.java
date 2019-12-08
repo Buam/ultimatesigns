@@ -18,6 +18,7 @@ public class Constants {
     ////////////
 
     // PERMISSIONS
+    public static final String ADMIN_PERMISSION = "ultimatesigns.admin";
     public static final String UPDATE_PERMISSION = "ultimatesigns.update";
     public static final String COMMAND_PERMISSION = "ultimatesigns.cmd.commands";
     public static final String RELOAD_PERMISSION = "ultimatesigns.cmd.reload";
@@ -27,11 +28,11 @@ public class Constants {
     public static final String BREAK_PERMISSION = "ultimatesigns.break";
     ////////////
 
-    public static boolean isSign(Material m) {
+    public static boolean isSign(final Material m) {
         return m.toString().contains("SIGN");
     }
 
-    public static Material getMaterial(String mat) {
+    public static Material getMaterial(final String mat) {
         String version = Bukkit.getServer().getClass().getPackage().getName().split("\\.")[3];
 
         if(!version.contains("v1_13") && !version.contains("v1_14")) {

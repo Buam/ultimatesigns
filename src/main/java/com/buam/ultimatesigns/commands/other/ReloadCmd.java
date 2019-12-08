@@ -8,13 +8,13 @@ import org.bukkit.entity.Player;
 
 public class ReloadCmd {
 
-    public boolean onCommand(CommandSender sender, String[] args) {
+    public void onCommand(CommandSender sender) {
 
         if(sender instanceof Player) {
             Player player = (Player) sender;
             if(!player.hasPermission(Constants.RELOAD_PERMISSION)) {
                 player.sendMessage(Messages.i.s("no-permission-message"));
-                return true;
+                return;
             }
         }
 
@@ -22,7 +22,6 @@ public class ReloadCmd {
 
         sender.sendMessage(UltimateSigns.PREFIX + "Reloaded successfully");
 
-        return true;
     }
 
 }

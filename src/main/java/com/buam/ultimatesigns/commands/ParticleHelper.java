@@ -2,7 +2,6 @@ package com.buam.ultimatesigns.commands;
 
 import org.bukkit.Effect;
 import org.bukkit.Location;
-import org.bukkit.Particle;
 
 public class ParticleHelper {
 

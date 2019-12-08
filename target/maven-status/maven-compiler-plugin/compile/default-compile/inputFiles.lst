@@ -3,7 +3,6 @@ C:\Users\svens\IdeaProjects\UltimateSigns\src\main\java\com\buam\ultimatesigns\c
 C:\Users\svens\IdeaProjects\UltimateSigns\src\main\java\com\buam\ultimatesigns\lang\variables\PlayerLevel.java
 C:\Users\svens\IdeaProjects\UltimateSigns\src\main\java\com\buam\ultimatesigns\events\SignListener.java
 C:\Users\svens\IdeaProjects\UltimateSigns\src\main\java\com\buam\ultimatesigns\commands\cmd\sub\CMDRemove.java
-C:\Users\svens\IdeaProjects\UltimateSigns\src\main\java\com\buam\ultimatesigns\variables\VariableHelper.java
 C:\Users\svens\IdeaProjects\UltimateSigns\src\main\java\com\buam\ultimatesigns\commands\ChatStates.java
 C:\Users\svens\IdeaProjects\UltimateSigns\src\main\java\com\buam\ultimatesigns\lang\TypeManager.java
 C:\Users\svens\IdeaProjects\UltimateSigns\src\main\java\com\buam\ultimatesigns\files\CSVFile.java
@@ -40,7 +39,6 @@ C:\Users\svens\IdeaProjects\UltimateSigns\src\main\java\com\buam\ultimatesigns\l
 C:\Users\svens\IdeaProjects\UltimateSigns\src\main\java\com\buam\ultimatesigns\commands\cmd\CMDBase.java
 C:\Users\svens\IdeaProjects\UltimateSigns\src\main\java\com\buam\ultimatesigns\commands\permission\sub\PMAdd.java
 C:\Users\svens\IdeaProjects\UltimateSigns\src\main\java\com\buam\ultimatesigns\SignTime.java
-C:\Users\svens\IdeaProjects\UltimateSigns\src\main\java\com\buam\ultimatesigns\lang\exceptions\InvalidInstructionException.java
 C:\Users\svens\IdeaProjects\UltimateSigns\src\main\java\com\buam\ultimatesigns\commands\permission\PMBase.java
 C:\Users\svens\IdeaProjects\UltimateSigns\src\main\java\com\buam\ultimatesigns\commands\permission\sub\PMEdit.java
 C:\Users\svens\IdeaProjects\UltimateSigns\src\main\java\com\buam\ultimatesigns\SignData.java

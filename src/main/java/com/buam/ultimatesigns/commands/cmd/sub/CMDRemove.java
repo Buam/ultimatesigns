@@ -7,10 +7,8 @@ import com.buam.ultimatesigns.commands.ChatStates;
 import com.buam.ultimatesigns.commands.ParticleHelper;
 import com.buam.ultimatesigns.commands.SignState;
 import com.buam.ultimatesigns.commands.cmd.CMDBase;
-import com.buam.ultimatesigns.config.Config;
 import com.buam.ultimatesigns.config.Messages;
 import org.bukkit.block.Block;
-import org.bukkit.command.Command;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -18,17 +16,17 @@ import org.bukkit.event.player.AsyncPlayerChatEvent;
 
 public class CMDRemove implements Listener {
 
-    public boolean onCommand(Player player) {
+    public void onCommand(final Player player) {
         Block target = player.getTargetBlockExact(40);
 
         // If it is not a sign, don't do anything
         if(!Constants.isSign(target.getType())) {
             player.sendMessage(UltimateSigns.PREFIX + Messages.i.s("look-at-sign-message"));
-            return true;
+            return;
         }
 
         // If the sign is not yet registered, do so
-        if(SignManager.i.isUltimateSign(target.getLocation())) SignManager.i.addSign(target.getLocation());
+        if(SignManager.i.isUltimateSign(target.getLocation())) SignManager.i.addSign(target.getLocation(), player.getUniqueId());
 
         // Does this sign have commands? listCommands() handles error
         if(CMDBase.listCommands(player, target)) {
@@ -37,8 +35,6 @@ public class CMDRemove implements Listener {
 
             player.sendMessage(UltimateSigns.PREFIX + Messages.i.s("remove-command-message"));
         }
-
-        return true;
     }
 
     @EventHandler

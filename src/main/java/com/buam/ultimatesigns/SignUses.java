@@ -6,20 +6,14 @@ import java.util.UUID;
 
 public class SignUses {
 
-    private UUID player;
+    private final UUID player;
     private Integer uses;
-    private Location location;
+    private final Location location;
 
     public SignUses(UUID player, Location l, Integer i) {
         this.player = player;
         this.location = l;
         this.uses = i;
-    }
-
-    public SignUses(UUID player, Location l) {
-        this.player = player;
-        this.location = l;
-        this.uses = 0;
     }
 
     public void inc() {

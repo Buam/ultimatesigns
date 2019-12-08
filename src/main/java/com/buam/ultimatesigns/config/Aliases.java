@@ -1,5 +1,6 @@
 package com.buam.ultimatesigns.config;
 
+import org.bukkit.ChatColor;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -15,22 +16,22 @@ public class Aliases {
 
     public static Aliases i;
 
-    private File configFile;
     private FileConfiguration config;
 
-    public Aliases(JavaPlugin plugin) {
+    public Aliases(final JavaPlugin plugin) {
         i = this;
         createConfig(plugin);
     }
 
     /**
-     * Create the configuration file and save it if it doesn't exist
+     * Create the configuration file and save it if it doesn't exist.
      * @param plugin The plugin
      */
-    private void createConfig(JavaPlugin plugin) {
-        configFile = new File(plugin.getDataFolder(), "aliases.yml");
+    private void createConfig(final JavaPlugin plugin) {
+        File configFile = new File(plugin.getDataFolder(), "aliases.yml");
         if(!configFile.exists()) {
-            configFile.getParentFile().mkdirs();
+            if(!configFile.getParentFile().mkdirs())
+                System.out.println(ChatColor.RED + "[UltimateSigns] failed to create aliases.yml");
             plugin.saveResource("aliases.yml", false);
         }
 
@@ -47,7 +48,7 @@ public class Aliases {
      * @param original The variable to get the aliases of
      * @return A set of Strings which represent the aliases
      */
-    public Set<String> getAliases(String original) {
+    public Set<String> getAliases(final String original) {
         Set<String> out = new HashSet<>();
 
         if(config == null) {

@@ -2,7 +2,7 @@ name: UltimateSigns
 description: The only sign plugin you will ever need!
 author: Buam
 version: ${project.version}
-api-version: 1.14
+api-version: "1.14"
 main: com.buam.ultimatesigns.UltimateSigns
 softdepend: [ProtocolLib, Vault]
 commands:
@@ -19,6 +19,7 @@ permissions:
       ultimatesigns.update: true
       ultimatesigns.console: true
       ultimatesigns.break: true
+      ultimatesigns.admin: true
   ultimatesigns.cmd.*:
     description: Gives access to the /ultimatesigns command
     children:

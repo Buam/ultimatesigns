@@ -27,41 +27,36 @@ public class SignEditorHelper {
     /**
      * The protocol manager of ProtocolLib
      */
-    private ProtocolManager protocolManager;
-
-    /**
-     * The UPDATE_SIGN packet listener
-     */
-    private PacketAdapter packetListener;
+    private final ProtocolManager protocolManager;
 
     /**
      * All listeners currently active
      */
-    private Map<String, SignGUIListener> listeners;
+    private final Map<String, SignGUIListener> listeners;
 
     /**
      * All the sign locations that are being edited
      */
-    private Map<String, Vector> signLocations;
+    private final Map<String, Vector> signLocations;
 
     /**
      * A set of players who expect a sign update (because they opened the editor)
      * The SIGN_UPDATE packets of these players will be caught and modified
      */
-    private Set<UUID> expectsSignUpdate;
+    private final Set<UUID> expectsSignUpdate;
 
     /**
      * Sets up the packet listener and all variables
-     * @param plugin
+     * @param plugin The plugin
      */
     public SignEditorHelper(Plugin plugin) {
         protocolManager = ProtocolLibrary.getProtocolManager();
-        listeners = new ConcurrentHashMap<String, SignGUIListener>();
-        signLocations = new ConcurrentHashMap<String, Vector>();
-        expectsSignUpdate = new ConcurrentSet<UUID>();
+        listeners = new ConcurrentHashMap<>();
+        signLocations = new ConcurrentHashMap<>();
+        expectsSignUpdate = new ConcurrentSet<>();
 
         ProtocolLibrary.getProtocolManager().addPacketListener(
-                packetListener =  new PacketAdapter(plugin, PacketType.Play.Client.UPDATE_SIGN) {
+                new PacketAdapter(plugin, PacketType.Play.Client.UPDATE_SIGN) {
                     @Override
                     public void onPacketReceiving(PacketEvent event) {
                         // ONLY WORKS IN 1.12 - 1.14!
@@ -78,11 +73,7 @@ public class SignEditorHelper {
                         if (bp.getZ() != v.getBlockZ()) return;
                         if (response != null) {
                             event.setCancelled(true);
-                            Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
-                                public void run() {
-                                    response.onSignDone(player, lines);
-                                }
-                            });
+                            Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, () -> response.onSignDone(player, lines));
                         }
                     }
                 }
@@ -96,8 +87,9 @@ public class SignEditorHelper {
      * @param defaultText The default text which should be displayed in the editor (the original sign text)
      * @param response The sign listener which will handle the closing of the editor and set the signs lines to the right value
      */
+    @SuppressWarnings("deprecation")
     public void open(Player player, Location sign, String[] defaultText, SignGUIListener response) {
-        List<PacketContainer> packets = new ArrayList<PacketContainer>();
+        List<PacketContainer> packets = new ArrayList<>();
         int x = sign.getBlockX();
         int y = sign.getBlockY();
         int z = sign.getBlockZ();
@@ -155,6 +147,6 @@ public class SignEditorHelper {
      * The sign listener interface
      */
     public interface SignGUIListener {
-        public void onSignDone(Player player, String[] lines);
+        void onSignDone(Player player, String[] lines);
     }
 }

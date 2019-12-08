@@ -5,10 +5,14 @@ import com.buam.ultimatesigns.SignManager;
 import com.buam.ultimatesigns.USign;
 import com.buam.ultimatesigns.UltimateSigns;
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.Sign;
 import org.bukkit.entity.Player;
+
+import java.util.HashSet;
+import java.util.Set;
 
 public class SignUpdater {
 
@@ -40,12 +44,16 @@ public class SignUpdater {
      * @param p The player
      */
     public static void handleSignsForPlayer(Player p) {
+        Set<Location> toRemove = new HashSet<>();
         for(USign s : SignManager.i.getAllSigns()) {
-            if(!(s.getBlock().getState() instanceof Sign) && SignManager.i.isUltimateSign(s.getLocation())) {
-                SignManager.i.removeSign(s.getLocation());
+            if(!(s.getBlock().getState() instanceof Sign)) {
+                toRemove.add(s.getLocation());
                 continue;
             }
             SignHelper.sendSignChange(p, s.getBlock(), SignHelper.translate((Sign) s.getBlock().getState(), p));
+        }
+        for(Location s : toRemove) {
+            SignManager.i.removeSign(s);
         }
     }
 
@@ -75,9 +83,18 @@ public class SignUpdater {
 
     /**
      * Schedules a new Update for a block which is 2 ticks delayed so the sign update is the last packet the player receives
-     * @param block
+     * @param block The sign to update
      */
     public static void scheduleSignUpdate(Block block) {
         Bukkit.getScheduler().scheduleSyncDelayedTask(UltimateSigns.i, () -> handleSignUpdate(block), 2);
+    }
+
+    /**
+     * Updates one sign for one player
+     * @param player The player
+     * @param block The sign
+     */
+    public static void handleSignUpdateForPlayer(Player player, Block block) {
+        SignHelper.sendSignChange(player, block, SignHelper.translate((Sign) block.getState(), player));
     }
 }

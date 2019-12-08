@@ -29,6 +29,7 @@ public class SignHelper {
      * @return A translated string
      */
     public static String[] translate(Sign sign, Player p) {
+        if(!SignManager.i.isUltimateSign(sign.getLocation())) SignManager.i.addSign(sign.getLocation(), p.getUniqueId());
         try {
             String[] lines = new String[4];
             for (int i = 0; i < 4; i++) {
@@ -48,6 +49,6 @@ public class SignHelper {
      * @return A translated string
      */
     public static String translateColors(String in) {
-        return ChatColor.translateAlternateColorCodes('&', in);
+        return ChatColor.translateAlternateColorCodes(Config.i.colorchar, in);
     }
 }

@@ -13,16 +13,16 @@ import java.util.Map;
 
 public class CopyPasteCmd {
 
-    Map<Player, Block> copied = new HashMap<>();
+    final Map<Player, Block> copied = new HashMap<>();
 
-    public boolean onCommand(CommandSender sender, String[] args) {
+    public void onCommand(final CommandSender sender, final String[] args) {
         // Get player
         if(sender instanceof Player) {
             Player player = (Player) sender;
 
             if(!player.hasPermission(Constants.COPY_PERMISSION)) {
                 player.sendMessage(Messages.i.s("no-permission-message"));
-                return true;
+                return;
             }
 
             // See if it is a valid sign
@@ -31,11 +31,11 @@ public class CopyPasteCmd {
             // If it is not a sign, don't do anything
             if(!Constants.isSign(target.getType())) {
                 player.sendMessage(UltimateSigns.PREFIX + Messages.i.s("look-at-sign-message"));
-                return true;
+                return;
             }
 
             // If the sign is not yet registered, do so
-            if(SignManager.i.isUltimateSign(target.getLocation())) SignManager.i.addSign(target.getLocation());
+            if(SignManager.i.isUltimateSign(target.getLocation())) SignManager.i.addSign(target.getLocation(), player.getUniqueId());
 
             if(args[0].equals("copy")) {
                 // Copy the sign
@@ -48,13 +48,13 @@ public class CopyPasteCmd {
                 if(original == null) {
                     // Player hasn't copied yet
                     player.sendMessage(UltimateSigns.PREFIX + Messages.i.s("copy-first-message"));
-                    return true;
+                    return;
                 }
 
                 if(original.getLocation().equals(target.getLocation())) {
                     // The blocks are the same, cancel
                     player.sendMessage(UltimateSigns.PREFIX + Messages.i.s("same-sign-message"));
-                    return true;
+                    return;
                 }
 
                 // Copy the sign
@@ -65,7 +65,6 @@ public class CopyPasteCmd {
             sender.sendMessage(Messages.i.s("only-players-message"));
         }
 
-        return true;
     }
 
 }

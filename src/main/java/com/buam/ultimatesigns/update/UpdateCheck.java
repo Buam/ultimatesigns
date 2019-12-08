@@ -80,7 +80,7 @@ public class UpdateCheck {
                 httpURLConnection.setRequestMethod("GET");
                 httpURLConnection.setRequestProperty(HttpHeaders.USER_AGENT, "Mozilla/5.0");
 
-                String fetchedVersion = Resources.toString(httpURLConnection.getURL(), Charset.defaultCharset());
+                @SuppressWarnings("UnstableApiUsage") String fetchedVersion = Resources.toString(httpURLConnection.getURL(), Charset.defaultCharset());
 
                 boolean latestVersion = fetchedVersion.equalsIgnoreCase(this.currentVersion);
 

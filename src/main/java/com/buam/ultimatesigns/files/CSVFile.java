@@ -3,10 +3,12 @@ package com.buam.ultimatesigns.files;
 import com.buam.ultimatesigns.*;
 import com.buam.ultimatesigns.lang.exceptions.InvalidDataFileException;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 
 import java.io.*;
 import java.util.*;
+
 
 public class CSVFile {
 
@@ -16,11 +18,11 @@ public class CSVFile {
      * @param path The path of the file to save to
      * @param blocks The set of signs to save
      */
-    public static void write(String path, Set<USign> blocks) {
+    public static void write(final String path, final Set<USign> blocks) {
         try {
             File f = new File(path);
             if(!f.exists()) {
-                f.createNewFile();
+                if(!f.createNewFile()) System.out.println(ChatColor.RED + "[UltimateSigns] failed to create data file");
             }
             BufferedWriter writer = new BufferedWriter(new FileWriter(f));
 
@@ -96,12 +98,16 @@ public class CSVFile {
      * Reads all signs from a CSV file without a header
      * Returns an empty set if the file doesn't exist
      * @param path The path of the file to get
-     * @return The parsed set of signs
+     * @return The parsed sign data
      */
-    public static SignData read(String path) {
+    public static SignData read(final String path) {
         Set<USign> signs = new HashSet<>();
 
         SignData out = new SignData();
+
+        out.signs = new HashSet<>();
+        out.times = new HashSet<>();
+        out.uses = new HashSet<>();
 
         File f = new File(path);
         if(!f.exists()) return out;
@@ -117,10 +123,11 @@ public class CSVFile {
 
             int mod = 0;
 
-            out.times = new HashSet<>();
-            out.uses = new HashSet<>();
-
-            UltimateSigns.i.lastReset = Long.parseLong(reader.readLine());
+            try {
+                UltimateSigns.i.lastReset = Long.parseLong(reader.readLine());
+            } catch(NumberFormatException e) {
+                UltimateSigns.i.lastReset = System.currentTimeMillis(); // Fix update
+            }
 
             while((line = reader.readLine()) != null) {
                 if(line.isEmpty()) continue;
@@ -149,8 +156,8 @@ public class CSVFile {
                         if (pSplit.length > 1) {
                             String[] permissionSplit = pSplit[1].split(",,");
                             if (permissionSplit.length != 0) {
-                                for (int i = 0; i < permissionSplit.length; i++) {
-                                    permissions.add(permissionSplit[i].trim());
+                                for (String s : permissionSplit) {
+                                    permissions.add(s.trim());
                                 }
                             }
                         }

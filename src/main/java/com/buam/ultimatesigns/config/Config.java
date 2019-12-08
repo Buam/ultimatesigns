@@ -20,18 +20,21 @@ public class Config {
     /**
      * FileConfiguration object which can be used to read and write values
      */
-    private FileConfiguration config;
+    private final FileConfiguration config;
 
     /**
      * A set of all custom variables defined
      */
-    private Set<Variable> variables;
+    private final Set<Variable> variables;
 
-    public Config(FileConfiguration config) {
+    public final char colorchar;
+
+    public Config(final FileConfiguration config) {
         i = this;
         this.config = config;
         variables = getVariables();
         config.options().copyDefaults(true);
+        colorchar = config.getString("color-char", "&").charAt(0);
     }
 
     /**
@@ -49,7 +52,7 @@ public class Config {
      * @param variableSection The 'variable' configuration sections
      * @return A set of all variables
      */
-    private Set<Variable> getVariables(ConfigurationSection variableSection) {
+    private Set<Variable> getVariables(final ConfigurationSection variableSection) {
         Set<Variable> out = new HashSet<>();
         for(String s : variableSection.getKeys(false)) {
             if(TypeManager.isUnique(s, out)) {
@@ -61,7 +64,7 @@ public class Config {
         return out;
     }
 
-    public Variable getVariable(String name, Object value) {
+    public Variable getVariable(final String name, final Object value) {
         return new Variable(name, (value instanceof Integer ? VariableType.INTEGER : (value instanceof Double ? VariableType.DOUBLE : VariableType.TEXT)), value);
     }
 
@@ -70,8 +73,12 @@ public class Config {
      * @param key The key to get
      * @return The translated string
      */
-    public String s(String key) {
+    public String s(final String key) {
         return SignHelper.translateColors(config.getString(key));
+    }
+
+    public String s(final String key, final String standard) {
+        return SignHelper.translateColors(config.getString(key, standard));
     }
 
     /**
@@ -79,7 +86,7 @@ public class Config {
      * @param key The key to get
      * @return The boolean
      */
-    public boolean b(String key) {
+    public boolean b(final String key) {
         return config.getBoolean(key);
     }
 
@@ -88,7 +95,7 @@ public class Config {
      * @param key The key to get
      * @return The long (integer, number)
      */
-    public long i(String key) {
+    public long i(final String key) {
         return config.getLong(key);
     }
 }

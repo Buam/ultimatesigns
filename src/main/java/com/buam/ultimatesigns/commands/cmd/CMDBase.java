@@ -3,12 +3,9 @@ package com.buam.ultimatesigns.commands.cmd;
 import com.buam.ultimatesigns.Constants;
 import com.buam.ultimatesigns.SignManager;
 import com.buam.ultimatesigns.UltimateSigns;
-import com.buam.ultimatesigns.commands.cmd.sub.CMDEdit;
-import com.buam.ultimatesigns.config.Config;
 import com.buam.ultimatesigns.config.Messages;
 import org.bukkit.ChatColor;
 import org.bukkit.block.Block;
-import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -20,14 +17,14 @@ Includes all arguments, gets created and called when args[0] = "cmd"
  */
 public class CMDBase {
 
-    public boolean onCommand(CommandSender sender, String[] args) {
+    public void onCommand(final CommandSender sender, final String[] args) {
         // Not a sub command for the console so:
         if(sender instanceof Player) {
             Player player = (Player) sender;
 
             if(!player.hasPermission(Constants.COMMAND_PERMISSION)) {
                 player.sendMessage(Messages.i.s("no-permission-message"));
-                return true;
+                return;
             }
 
             if (args.length == 1) {
@@ -36,7 +33,7 @@ public class CMDBase {
                 Block block = player.getTargetBlock(null, 40);
                 // Only if it is a sign. If it is not yet registered, register it
                 if(Constants.isSign(block.getType())) {
-                    if(!SignManager.i.isUltimateSign(block.getLocation())) SignManager.i.addSign(block.getLocation());
+                    if(!SignManager.i.isUltimateSign(block.getLocation())) SignManager.i.addSign(block.getLocation(), player.getUniqueId());
                     listCommands(player, block);
                 } else {
                     player.sendMessage(UltimateSigns.PREFIX + Messages.i.s("look-at-sign-message"));
@@ -44,13 +41,19 @@ public class CMDBase {
             } else if(args.length >= 2) {
                 switch(args[1]) {
                     case "add":
-                        return UltimateSigns.command.cmdAdd.onCommand(player);
+                        UltimateSigns.command.cmdAdd.onCommand(player);
+                        return;
                     case "remove":
-                        return UltimateSigns.command.cmdRemove.onCommand(player);
+                        UltimateSigns.command.cmdRemove.onCommand(player);
+                        return;
                     case "edit":
-                        return UltimateSigns.command.cmdEdit.onCommand(player);
+                        UltimateSigns.command.cmdEdit.onCommand(player);
+                        return;
                     case "file":
-                        return UltimateSigns.command.cmdFile.onCommand(player, args);
+                        UltimateSigns.command.cmdFile.onCommand(player, args);
+                        return;
+                    default:
+                        usage(player);
                 }
             } else {
                 usage(player);
@@ -59,7 +62,6 @@ public class CMDBase {
             sender.sendMessage(Messages.i.s("only-players-message"));
         }
 
-        return true;
     }
 
 
@@ -69,7 +71,7 @@ public class CMDBase {
      * @param block The sign block
      * @return false if the sign has no commands
      */
-    public static boolean listCommands(Player player, Block block) {
+    public static boolean listCommands(final Player player, final Block block) {
         List<String> commands = SignManager.i.signAt(block.getLocation()).getCommands();
 
         if(commands.size() == 0) {
@@ -90,9 +92,9 @@ public class CMDBase {
 
     /**
      * Sends a usage message on how to use this command
-     * @param player
+     * @param player The player to send the message to
      */
-    private static void usage(Player player) {
+    private static void usage(final Player player) {
         player.sendMessage(ChatColor.RED + "Usage: /ultimatesigns [subcommand]");
     }
 

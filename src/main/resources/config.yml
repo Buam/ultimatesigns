@@ -4,6 +4,9 @@ sign-update-interval: 60
 # The subfolder where commands get loaded from (/ultimatesigns cmd file)
 commands-folder: "/commands/"
 
+# The color char. Colors will be accessed by char + color code
+color-char: '&'
+
 # Do players need the permission 'ultimatesigns.update' to have signs updated (with color, names etc.)
 enable-update-permission: true
 

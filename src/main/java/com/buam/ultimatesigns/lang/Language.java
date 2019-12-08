@@ -4,16 +4,17 @@ import com.buam.ultimatesigns.SignHelper;
 import com.buam.ultimatesigns.USign;
 import com.buam.ultimatesigns.UltimateSigns;
 import com.buam.ultimatesigns.lang.exceptions.InvalidArgumentsException;
-import com.buam.ultimatesigns.lang.types.Number;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
+import java.lang.reflect.InvocationTargetException;
+
 public class Language {
 
-    private String[] lines;
+    private final String[] lines;
     private int currentLine;
-    private boolean left;
+    private final boolean left;
 
     // a is for for (iterations)
     private int a;
@@ -21,19 +22,17 @@ public class Language {
     private int b;
     // c is for for (end index of for)
     private int c;
-    private String d;
-    private String e;
 
-    public Language(String[] lines, boolean left) {
+    public Language(final String[] lines, final boolean left) {
         this.lines = lines;
         this.left = left;
     }
 
-    public void executeAll(Player p, USign s) throws InvalidArgumentsException, IllegalAccessException, InstantiationException {
+    public void executeAll(Player p, USign s) throws InvalidArgumentsException, IllegalAccessException, InstantiationException, NoSuchMethodException, InvocationTargetException {
         execute(p, s);
     }
 
-    private void execute(Player p, USign s) throws InvalidArgumentsException, InstantiationException, IllegalAccessException {
+    private void execute(Player p, USign s) throws InvalidArgumentsException, InstantiationException, IllegalAccessException, NoSuchMethodException, InvocationTargetException {
         if(lines.length == 0) return;
         // FOR
         if(a != 0) {
@@ -73,14 +72,14 @@ public class Language {
                 cmd = cmd.replace(")", "");
                 cmd = cmd.trim();
 
-                String player = "";
-                String message = "";
+                String player;
+                String message;
 
                 player = cmd.substring(0, cmd.indexOf('"')).trim();
                 message = cmd.substring(cmd.indexOf('"')).replace("\"", "").trim();
 
                 if (TypeManager.isText(player)) {
-                    player = TypeManager.getText(player, p, s);
+                    player = TypeManager.getText(player, p);
                 }
                 message = SignHelper.translateColors(TypeManager.translate(message, p, s));
 
@@ -119,7 +118,7 @@ public class Language {
                 cmd = cmd.replace(")", "");
                 cmd = cmd.trim();
 
-                int num = 0;
+                int num;
 
                 if (TypeManager.isNumber(cmd)) {
                     num = TypeManager.getNumber(cmd, p, s);
@@ -163,13 +162,13 @@ public class Language {
         Bukkit.getScheduler().scheduleSyncDelayedTask(UltimateSigns.i, () -> {
             try {
                 execute(p, s);
-            } catch (InvalidArgumentsException | InstantiationException | IllegalAccessException ex) {
+            } catch (InvalidArgumentsException | InstantiationException | IllegalAccessException | NoSuchMethodException | InvocationTargetException ex) {
                 ex.printStackTrace();
             }
-        }, Math.round(delayMillis / 1000 * 20));
+        }, Math.round(delayMillis / 1000f * 20f));
     }
 
-    private void executeCommand(String cmd, Player p, USign s) throws InstantiationException, IllegalAccessException {
+    private void executeCommand(String cmd, Player p, USign s) throws InstantiationException, IllegalAccessException, NoSuchMethodException, InvocationTargetException {
         cmd = TypeManager.translate(cmd, p, s);
         if(cmd.contains("(console)")) {
             cmd = cmd.replace("(console)", "").trim();
@@ -186,7 +185,7 @@ public class Language {
     }
 
     private int findNextEndFor() {
-        for(int i = currentLine; i<lines.length; i++) {
+        for(int i = currentLine; i < lines.length; i++) {
             if(lines[i].trim().equalsIgnoreCase("(endfor)")) {
                 return i;
             }
@@ -195,16 +194,12 @@ public class Language {
     }
 
     private int findNextEndIf() {
-        for(int i = currentLine; i< lines.length; i++) {
+        for(int i = currentLine; i < lines.length; i++) {
             if(lines[i].trim().equalsIgnoreCase("(endif)")) {
                 return i;
             }
         }
         return 0;
-    }
-
-    public int getCurrentLine() {
-        return currentLine;
     }
 
 }
