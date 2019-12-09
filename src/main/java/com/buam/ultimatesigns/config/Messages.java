@@ -26,7 +26,7 @@ public class Messages {
         String s = config.getString(key);
 
         for(int i = 0; i < args.length; i++) {
-            s.replace("%" + (i + 1), args[i].toString());
+            s = s.replace("%" + (i + 1), args[i].toString());
         }
 
         return SignHelper.translateColors(s);

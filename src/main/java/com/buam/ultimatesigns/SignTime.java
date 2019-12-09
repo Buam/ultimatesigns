@@ -53,4 +53,9 @@ public class SignTime {
         }
         return false;
     }
+
+    @Override
+    public int hashCode() {
+        return 0;
+    }
 }
