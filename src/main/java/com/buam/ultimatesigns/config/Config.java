@@ -4,11 +4,13 @@ import com.buam.ultimatesigns.lang.TypeManager;
 import com.buam.ultimatesigns.utils.TextUtils;
 import com.buam.ultimatesigns.variables.Variable;
 import com.buam.ultimatesigns.variables.VariableType;
+import com.google.common.collect.Sets;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 public class Config {
@@ -34,7 +36,10 @@ public class Config {
         this.config = config;
         variables = getVariables();
         config.options().copyDefaults(true);
-        colorchar = config.getString("color-char", "&").charAt(0);
+        String c = config.getString("color-char", "&");
+        if(c == null || c.isEmpty())
+            c = "&";
+        colorchar = c.charAt(0);
     }
 
     /**
@@ -44,7 +49,11 @@ public class Config {
     public Set<Variable> getVariables() {
         if(variables != null) return variables;
         if(!config.getKeys(false).contains("variables")) return new HashSet<>();
-        return getVariables(config.getConfigurationSection("variables"));
+        ConfigurationSection variableSection = config.getConfigurationSection("variables");
+
+        if(variableSection == null) return Sets.newHashSet();
+
+        return getVariables(variableSection);
     }
 
     /**
@@ -56,7 +65,8 @@ public class Config {
         Set<Variable> out = new HashSet<>();
         for(String s : variableSection.getKeys(false)) {
             if(TypeManager.isUnique(s, out)) {
-                out.add(getVariable(s, variableSection.getConfigurationSection(s).get("value")));
+                Object value = Objects.requireNonNull(variableSection.getConfigurationSection(s)).get("value");
+                out.add(getVariable(s, value == null ? "" : value));
             } else {
                 System.out.println(ChatColor.RED + "Variable '" + s + "' can't be used. It already exists");
             }
@@ -77,6 +87,12 @@ public class Config {
         return TextUtils.translateColors(config.getString(key));
     }
 
+    /**
+     * Translates a string from the configuration with a standard value
+     * @param key The key to get
+     * @param standard The standard value if the key doesn't exist
+     * @return The translated String
+     */
     public String s(final String key, final String standard) {
         return TextUtils.translateColors(config.getString(key, standard));
     }

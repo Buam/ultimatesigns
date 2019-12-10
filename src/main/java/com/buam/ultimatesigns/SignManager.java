@@ -3,12 +3,14 @@ package com.buam.ultimatesigns;
 import com.buam.ultimatesigns.config.Config;
 import com.buam.ultimatesigns.extras.SignUpdater;
 import com.buam.ultimatesigns.files.CSVFile;
+import com.buam.ultimatesigns.utils.SignUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.Sign;
 import org.bukkit.entity.Player;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.*;
 
@@ -64,42 +66,42 @@ public class SignManager {
         if(containsSignAt(l)) {
             signAt(l).addCommand(cmd);
         }
-        saveSigns();
+        saveSignsAsync();
     }
 
     public void removeCommand(Location l, int index) {
         if(containsSignAt(l)) {
             signAt(l).removeCommand(index);
         }
-        saveSigns();
+        saveSignsAsync();
     }
 
     public void editCommand(Location l, int index, String newCmd) {
         if(containsSignAt(l)) {
             signAt(l).setCommand(index, newCmd);
         }
-        saveSigns();
+        saveSignsAsync();
     }
 
     public void addPermission(Location l, String permission) {
         if(containsSignAt(l)) {
             signAt(l).addPermission(permission);
         }
-        saveSigns();
+        saveSignsAsync();
     }
 
     public void removePermission(Location l, int index) {
         if(containsSignAt(l)) {
             signAt(l).removePermission(index);
         }
-        saveSigns();
+        saveSignsAsync();
     }
 
     public void editPermission(Location l, int index, String newPermission) {
         if(containsSignAt(l)) {
             signAt(l).editPermission(index, newPermission);
         }
-        saveSigns();
+        saveSignsAsync();
     }
 
     public USign signAt(Location l) {
@@ -148,11 +150,22 @@ public class SignManager {
         return containsSignAt(l);
     }
 
-    /**
-     * Saves all signs into the data.csv file
-     */
     public void saveSigns() {
-        CSVFile.write(data_path, signs);
+        SignData data = new SignData();
+        data.signs = signs;
+        data.times = times;
+        data.uses = uses;
+
+        CSVFile.write(data_path, data);
+    }
+
+    public void saveSignsAsync() {
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                saveSigns();
+            }
+        }.runTaskAsynchronously(UltimateSigns.i);
     }
 
     /**
@@ -160,18 +173,10 @@ public class SignManager {
      * @param l The location of the block to check
      * @return The sign if one was found that fits the criteria
      */
-    @SuppressWarnings("deprecation")
     public USign isRelative(Location l) {
         for(USign s : signs) {
-            try {
-                // Returns s if l is the location of a block that is a sign or a block that a sign is attached to
-                if (s.getLocation().equals(l)) return s;
-                org.bukkit.material.Sign sign = (org.bukkit.material.Sign) s.getBlock().getState().getData();
-                if (s.getLocation().equals(s.getBlock().getRelative(sign.getAttachedFace()).getLocation())) return s;
-            } catch(ClassCastException e) {
-                // It failed, why? I have no idea
-                // So do nothing lol
-            }
+            if (s.getLocation().equals(l)) return s;
+            if(s.getLocation().equals(SignUtils.getAttachedBlock(s.getBlock()).getLocation())) return s;
         }
         return null;
     }
@@ -220,14 +225,6 @@ public class SignManager {
             signs.add(sign);
         }
         return new SignTime(player.getUniqueId(), sign.getLocation(), Config.i.i("not-used-yet-time"));
-    }
-
-    public Set<SignTime> getAllSignTimes() {
-        return times;
-    }
-
-    public Set<SignUses> getAllSignUses() {
-        return uses;
     }
 
     public void saveUse(Player player, Location location) {

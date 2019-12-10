@@ -48,6 +48,7 @@ com\buam\ultimatesigns\commands\cmd\CMDBase.class
 com\buam\ultimatesigns\lang\variables\PlayerWorldName.class
 com\buam\ultimatesigns\variables\Variable.class
 com\buam\ultimatesigns\lang\variables\PlayersOnline.class
+com\buam\ultimatesigns\SignManager$1.class
 com\buam\ultimatesigns\SignTime.class
 com\buam\ultimatesigns\events\SignListener.class
 com\buam\ultimatesigns\UltimateSigns.class

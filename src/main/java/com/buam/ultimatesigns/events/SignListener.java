@@ -9,6 +9,7 @@ import com.buam.ultimatesigns.config.Messages;
 import com.buam.ultimatesigns.extras.SignUpdater;
 import com.buam.ultimatesigns.lang.Language;
 import com.buam.ultimatesigns.lang.exceptions.InvalidArgumentsException;
+import com.buam.ultimatesigns.utils.SignUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.block.Block;
 import org.bukkit.block.Sign;
@@ -36,6 +37,8 @@ public class SignListener implements Listener {
      */
     @EventHandler
     public void onBlockBreak(BlockBreakEvent e) {
+        if(!Config.i.b("protect-signs")) return;
+
         // Remove the sign from the list if it's the owner
         Block b = e.getBlock();
 
@@ -46,7 +49,7 @@ public class SignListener implements Listener {
                 Player player = e.getPlayer();
 
                 // It is a sign, or the block that is going to break has a sign attached to it
-                if(s.getOwner().equals(player.getUniqueId()) || player.hasPermission(Constants.BREAK_PERMISSION) || !Config.i.b("protect-signs")) {
+                if(s.getOwner().equals(player.getUniqueId()) || player.hasPermission(Constants.BREAK_PERMISSION)) {
                     // The sign was rightfully broken by its owner
                     SignManager.i.removeSign(s.getLocation());
                 } else {
@@ -135,7 +138,7 @@ public class SignListener implements Listener {
                     SignUpdater.sendOriginalSignText(e.getPlayer(), block);
 
                     // Open sign editor
-                    openEditor((Sign) block.getState(), e.getPlayer());
+                    SignUtils.openSignEditor((Sign) block.getState(), e.getPlayer());
 
                 }
 
@@ -175,19 +178,6 @@ public class SignListener implements Listener {
         }
     }
 
-    /**
-     * Helper method to open the sign editor using Protocol
-     * @param s The sign
-     * @param p The player
-     */
-    public void openEditor(Sign s, Player p) {
-        UltimateSigns.signEditor.open(p, s.getLocation(), null, (player, lines) -> {
-            for(int i = 0; i<lines.length; i++) {
-                s.setLine(i, lines[i]);
-                s.update(true);
-                Bukkit.getScheduler().scheduleSyncDelayedTask(UltimateSigns.i, () -> SignUpdater.handleSignUpdate(s.getBlock()), 5);
-            }
-        });
-    }
+
 
 }

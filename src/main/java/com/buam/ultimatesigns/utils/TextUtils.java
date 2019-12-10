@@ -20,6 +20,7 @@ public class TextUtils {
         try {
             String[] lines = new String[4];
             for (int i = 0; i < 4; i++) {
+                // First translate variables, then translate colors
                 lines[i] = TypeManager.translate(sign.getLine(i), p, SignManager.i.signAt(sign.getLocation()));
                 lines[i] = translateColors(lines[i]);
             }
@@ -31,7 +32,7 @@ public class TextUtils {
     }
 
     /**
-     * Translate basic color codes with '&'
+     * Translate basic color codes with the color char specified in the config
      * @param in The string to translate
      * @return A translated string
      */

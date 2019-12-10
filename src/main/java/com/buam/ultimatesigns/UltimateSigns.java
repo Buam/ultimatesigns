@@ -150,9 +150,8 @@ public class UltimateSigns extends JavaPlugin {
         SignManager.i.saveSigns();
         new SignManager(getDataFolder() + Constants.DATA_FILE);
 
-        // Just update all signs - just in case
+        // Update all signs - just in case
         SignUpdater.updateAllSigns();
-
     }
 
     /**

@@ -16,9 +16,9 @@ public class CSVFile {
      * Saves a set of Signs to a file in the CSV format without a header
      * The file gets created if it doesn't exist yet
      * @param path The path of the file to save to
-     * @param blocks The set of signs to save
+     * @param data The SignData to save
      */
-    public static void write(final String path, final Set<USign> blocks) {
+    public static void write(final String path, final SignData data) {
         try {
             File f = new File(path);
             if(!f.exists()) {
@@ -29,7 +29,7 @@ public class CSVFile {
             writer.write(Long.toString(UltimateSigns.i.lastReset));
             writer.newLine();
 
-            for(USign s : blocks) {
+            for(USign s : data.signs) {
                 StringBuilder line = new StringBuilder();
                 Location l = s.getBlock().getLocation();
                 line.append(l.getWorld().getUID()).append(",, ");
@@ -56,7 +56,7 @@ public class CSVFile {
             writer.write("----");
             writer.newLine();
 
-            for(SignTime st : SignManager.i.getAllSignTimes()) {
+            for(SignTime st : data.times) {
                 StringBuilder line = new StringBuilder();
                 Location l = st.getLocation();
                 line.append(st.getPlayerID().toString()).append(",, ");
@@ -73,7 +73,7 @@ public class CSVFile {
             writer.write("----");
             writer.newLine();
 
-            for(SignUses su : SignManager.i.getAllSignUses()) {
+            for(SignUses su : data.uses) {
                 StringBuilder line = new StringBuilder();
                 Location l = su.getSign();
                 line.append(su.getPlayer().toString()).append(",, ");
