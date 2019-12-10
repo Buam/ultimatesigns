@@ -1,6 +1,6 @@
 package com.buam.ultimatesigns.editor;
 
-import com.buam.ultimatesigns.Constants;
+import com.buam.ultimatesigns.SharedConstants;
 import com.comphenix.protocol.PacketType;
 import com.comphenix.protocol.ProtocolLibrary;
 import com.comphenix.protocol.ProtocolManager;
@@ -98,7 +98,7 @@ public class SignEditorHelper {
         if (defaultText != null) {
             PacketContainer packet53 = protocolManager.createPacket(PacketType.Play.Server.BLOCK_CHANGE);
             PacketContainer packet130 = protocolManager.createPacket(PacketType.Play.Server.UPDATE_SIGN);
-            WrappedBlockData iblock = WrappedBlockData.createData(Constants.getMaterial("LEGACY_SIGN_POST"));
+            WrappedBlockData iblock = WrappedBlockData.createData(SharedConstants.getMaterial("LEGACY_SIGN_POST"));
             WrappedChatComponent[] cc = {WrappedChatComponent.fromText(defaultText[0]), WrappedChatComponent.fromText(defaultText[1]), WrappedChatComponent.fromText(defaultText[2]), WrappedChatComponent.fromText(defaultText[3])};
 
             packet53.getBlockPositionModifier().write(0, bpos);

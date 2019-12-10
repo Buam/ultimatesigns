@@ -1,6 +1,6 @@
 package com.buam.ultimatesigns.commands.cmd;
 
-import com.buam.ultimatesigns.Constants;
+import com.buam.ultimatesigns.SharedConstants;
 import com.buam.ultimatesigns.SignManager;
 import com.buam.ultimatesigns.UltimateSigns;
 import com.buam.ultimatesigns.config.Messages;
@@ -22,7 +22,7 @@ public class CMDBase {
         if(sender instanceof Player) {
             Player player = (Player) sender;
 
-            if(!player.hasPermission(Constants.COMMAND_PERMISSION)) {
+            if(!player.hasPermission(SharedConstants.COMMAND_PERMISSION)) {
                 player.sendMessage(Messages.i.s("no-permission-message"));
                 return;
             }
@@ -32,7 +32,7 @@ public class CMDBase {
 
                 Block block = player.getTargetBlock(null, 40);
                 // Only if it is a sign. If it is not yet registered, register it
-                if(Constants.isSign(block.getType())) {
+                if(SharedConstants.isSign(block.getType())) {
                     if(!SignManager.i.isUltimateSign(block.getLocation())) SignManager.i.addSign(block.getLocation(), player.getUniqueId());
                     listCommands(player, block);
                 } else {

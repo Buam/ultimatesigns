@@ -3,7 +3,7 @@ package com.buam.ultimatesigns;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 
-public class Constants {
+public class SharedConstants {
 
     public static final String DATA_FILE = "/data.csv";
 

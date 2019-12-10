@@ -162,7 +162,7 @@ public class CSVFile {
                             }
                         }
 
-                        if (l.getWorld().getBlockAt(l) != null) if (Constants.isSign(l.getWorld().getBlockAt(l).getType()))
+                        if (l.getWorld().getBlockAt(l) != null) if (SharedConstants.isSign(l.getWorld().getBlockAt(l).getType()))
                             signs.add(new USign(l, commands, permissions, owner));
                         break;
                     case 1:

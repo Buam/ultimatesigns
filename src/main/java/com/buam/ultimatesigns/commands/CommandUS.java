@@ -1,6 +1,6 @@
 package com.buam.ultimatesigns.commands;
 
-import com.buam.ultimatesigns.Constants;
+import com.buam.ultimatesigns.SharedConstants;
 import com.buam.ultimatesigns.UltimateSigns;
 import com.buam.ultimatesigns.commands.cmd.CMDBase;
 import com.buam.ultimatesigns.commands.cmd.sub.CMDAdd;
@@ -117,7 +117,7 @@ public class CommandUS implements CommandExecutor {
      * @param sender The sender to send this message to
      */
     private void help(final CommandSender sender) {
-        if(sender instanceof Player && !sender.hasPermission(Constants.ADMIN_PERMISSION)) return;
+        if(sender instanceof Player && !sender.hasPermission(SharedConstants.ADMIN_PERMISSION)) return;
         sender.sendMessage(ChatColor.WHITE + "- " + ChatColor.GREEN + "Ultimate" + ChatColor.BLUE + "Signs" + ChatColor.WHITE + " Help-------------------------------------");
         sender.sendMessage(ChatColor.GREEN + "/ultimatesigns" + ChatColor.BLUE + " - main " + ChatColor.GREEN + "Ultimate" + ChatColor.GREEN + "Signs" + ChatColor.BLUE + " command");
         sender.sendMessage(ChatColor.GREEN + "/ultimatesigns reload" + ChatColor.BLUE + " - reload the plugin");

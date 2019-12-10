@@ -1,6 +1,6 @@
 package com.buam.ultimatesigns.utils;
 
-import com.buam.ultimatesigns.Constants;
+import com.buam.ultimatesigns.SharedConstants;
 import com.buam.ultimatesigns.UltimateSigns;
 import com.buam.ultimatesigns.config.Config;
 import com.buam.ultimatesigns.extras.SignUpdater;
@@ -21,7 +21,7 @@ public class SignUtils {
      * @param lines The text to update
      */
     public static void sendSignChange(Player p, Block b, String[] lines) {
-        if(!Config.i.b(Constants.ENABLE_UPDATE_PERMISSION) || p.hasPermission(Constants.UPDATE_PERMISSION)) {
+        if(!Config.i.b(SharedConstants.ENABLE_UPDATE_PERMISSION) || p.hasPermission(SharedConstants.UPDATE_PERMISSION)) {
             p.sendSignChange(b.getLocation(), lines);
         }
     }

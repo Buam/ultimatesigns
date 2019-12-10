@@ -1,6 +1,6 @@
 package com.buam.ultimatesigns.commands.other;
 
-import com.buam.ultimatesigns.Constants;
+import com.buam.ultimatesigns.SharedConstants;
 import com.buam.ultimatesigns.SignManager;
 import com.buam.ultimatesigns.UltimateSigns;
 import com.buam.ultimatesigns.config.Messages;
@@ -20,7 +20,7 @@ public class CopyPasteCmd {
         if(sender instanceof Player) {
             Player player = (Player) sender;
 
-            if(!player.hasPermission(Constants.COPY_PERMISSION)) {
+            if(!player.hasPermission(SharedConstants.COPY_PERMISSION)) {
                 player.sendMessage(Messages.i.s("no-permission-message"));
                 return;
             }
@@ -29,7 +29,7 @@ public class CopyPasteCmd {
             Block target = player.getTargetBlockExact(40);
 
             // If it is not a sign, don't do anything
-            if(!Constants.isSign(target.getType())) {
+            if(!SharedConstants.isSign(target.getType())) {
                 player.sendMessage(UltimateSigns.PREFIX + Messages.i.s("look-at-sign-message"));
                 return;
             }

@@ -1,6 +1,6 @@
 package com.buam.ultimatesigns.commands.cmd.sub;
 
-import com.buam.ultimatesigns.Constants;
+import com.buam.ultimatesigns.SharedConstants;
 import com.buam.ultimatesigns.SignManager;
 import com.buam.ultimatesigns.UltimateSigns;
 import com.buam.ultimatesigns.commands.ParticleHelper;
@@ -21,7 +21,7 @@ public class CMDFile {
             Block target = player.getTargetBlockExact(40);
 
             // If it is not a sign, don't do anything
-            if(!Constants.isSign(target.getType())) {
+            if(!SharedConstants.isSign(target.getType())) {
                 player.sendMessage(UltimateSigns.PREFIX + Messages.i.s("look-at-sign-message"));
                 return;
             }
@@ -38,7 +38,7 @@ public class CMDFile {
 
             // Load file, if it doesn't work, send the error message
             try {
-                SignManager.i.setCommands(target.getLocation(), FileReader.read(UltimateSigns.i.getDataFolder() + Config.i.s(Constants.COMMANDS_SUBFOLDER) + file));
+                SignManager.i.setCommands(target.getLocation(), FileReader.read(UltimateSigns.i.getDataFolder() + Config.i.s(SharedConstants.COMMANDS_SUBFOLDER) + file));
                 player.sendMessage(UltimateSigns.PREFIX + Messages.i.s("loaded-commands-message"));
 
                 // Play a cool particle effect!

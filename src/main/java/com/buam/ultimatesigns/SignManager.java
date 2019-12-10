@@ -57,7 +57,7 @@ public class SignManager {
     }
 
     public void addSign(Location l, UUID owner) {
-        if(Constants.isSign(l.getBlock().getType()) && !containsSignAt(l)) {
+        if(SharedConstants.isSign(l.getBlock().getType()) && !containsSignAt(l)) {
             signs.add(new USign(l.getBlock().getLocation(), new ArrayList<>(), new ArrayList<>(), owner));
         }
     }
@@ -239,7 +239,7 @@ public class SignManager {
 
     public void resetSignUses() {
         long currTime = System.currentTimeMillis();
-        long resetTime = Config.i.i(Constants.SIGN_USES_RESET_TIME) * 1000;
+        long resetTime = Config.i.i(SharedConstants.SIGN_USES_RESET_TIME) * 1000;
         if(currTime - UltimateSigns.i.lastReset >= resetTime) {
             for(SignUses u : uses) {
                 u.reset();

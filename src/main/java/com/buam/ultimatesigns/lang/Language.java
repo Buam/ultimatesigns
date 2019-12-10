@@ -60,7 +60,9 @@ public class Language {
 
         int delayMillis = 0;
 
-        if(!cmd.trim().equalsIgnoreCase("") && exec) {
+        if(!cmd.trim().isEmpty() && exec) {
+
+            if(cmd.trim().equals("(stop)")) return; // (stop) command
 
             // Execute
             if (a != 0) {
@@ -72,11 +74,8 @@ public class Language {
                 cmd = cmd.replace(")", "");
                 cmd = cmd.trim();
 
-                String player;
-                String message;
-
-                player = cmd.substring(0, cmd.indexOf('"')).trim();
-                message = cmd.substring(cmd.indexOf('"')).replace("\"", "").trim();
+                String player = cmd.substring(0, cmd.indexOf('"')).trim();
+                String message = cmd.substring(cmd.indexOf('"')).replace("\"", "").trim();
 
                 if (TypeManager.isText(player)) {
                     player = TypeManager.getText(player, p);
@@ -148,8 +147,6 @@ public class Language {
                         throw new InvalidArgumentsException("If-Statement has no (endif)");
                     }
                 }
-            } else if(cmd.contains("(stop)")) {
-                return;
             } else {
                 if (!cmd.contains("(endfor)") && !cmd.contains("(endif)")) executeCommand(cmd, p, s);
             }

@@ -1,6 +1,6 @@
 package com.buam.ultimatesigns.commands.permission.sub;
 
-import com.buam.ultimatesigns.Constants;
+import com.buam.ultimatesigns.SharedConstants;
 import com.buam.ultimatesigns.SignManager;
 import com.buam.ultimatesigns.UltimateSigns;
 import com.buam.ultimatesigns.commands.ChatStates;
@@ -20,7 +20,7 @@ public class PMRemove implements Listener {
         Block target = player.getTargetBlockExact(40);
 
         // If it is not a sign, don't do anything
-        if(!Constants.isSign(target.getType())) {
+        if(!SharedConstants.isSign(target.getType())) {
             player.sendMessage(UltimateSigns.PREFIX + Messages.i.s("look-at-sign-message"));
             return;
         }

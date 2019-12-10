@@ -1,6 +1,6 @@
 package com.buam.ultimatesigns.events;
 
-import com.buam.ultimatesigns.Constants;
+import com.buam.ultimatesigns.SharedConstants;
 import com.buam.ultimatesigns.SignManager;
 import com.buam.ultimatesigns.USign;
 import com.buam.ultimatesigns.UltimateSigns;
@@ -42,14 +42,14 @@ public class SignListener implements Listener {
         // Remove the sign from the list if it's the owner
         Block b = e.getBlock();
 
-        if(Constants.isSign(b.getType())) {
+        if(SharedConstants.isSign(b.getType())) {
             USign s = SignManager.i.isRelative(b.getLocation());
 
             if(s != null) {
                 Player player = e.getPlayer();
 
                 // It is a sign, or the block that is going to break has a sign attached to it
-                if(s.getOwner().equals(player.getUniqueId()) || player.hasPermission(Constants.BREAK_PERMISSION)) {
+                if(s.getOwner().equals(player.getUniqueId()) || player.hasPermission(SharedConstants.BREAK_PERMISSION)) {
                     // The sign was rightfully broken by its owner
                     SignManager.i.removeSign(s.getLocation());
                 } else {
@@ -125,7 +125,7 @@ public class SignListener implements Listener {
     @EventHandler
     public void onPlayerInteract(PlayerInteractEvent e) throws IllegalAccessException, InstantiationException, InvalidArgumentsException, NoSuchMethodException, InvocationTargetException {
         if(e.getAction() != Action.RIGHT_CLICK_BLOCK && e.getAction() != Action.LEFT_CLICK_BLOCK) return;
-        if (Constants.isSign(e.getClickedBlock().getType())) {
+        if (SharedConstants.isSign(e.getClickedBlock().getType())) {
             SignUpdater.handleSignUpdateForPlayer(e.getPlayer(), e.getClickedBlock());
 
             if (e.getPlayer().isSneaking() && e.getAction().equals(Action.RIGHT_CLICK_BLOCK) && UltimateSigns.command.inEditMode.contains(e.getPlayer())) {

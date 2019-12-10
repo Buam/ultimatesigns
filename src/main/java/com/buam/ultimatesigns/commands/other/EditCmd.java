@@ -1,6 +1,6 @@
 package com.buam.ultimatesigns.commands.other;
 
-import com.buam.ultimatesigns.Constants;
+import com.buam.ultimatesigns.SharedConstants;
 import com.buam.ultimatesigns.UltimateSigns;
 import com.buam.ultimatesigns.config.Messages;
 import org.bukkit.command.CommandSender;
@@ -17,7 +17,7 @@ public class EditCmd {
         if(sender instanceof Player) {
             Player player = (Player) sender;
 
-            if(!player.hasPermission(Constants.EDIT_PERMISSION)) {
+            if(!player.hasPermission(SharedConstants.EDIT_PERMISSION)) {
                 player.sendMessage(Messages.i.s("no-permission-message"));
                 return;
             }

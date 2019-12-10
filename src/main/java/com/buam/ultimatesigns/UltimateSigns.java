@@ -112,16 +112,16 @@ public class UltimateSigns extends JavaPlugin {
         new Aliases(this);
 
         // New SignManager with data path
-        new SignManager(getDataFolder() + Constants.DATA_FILE);
+        new SignManager(getDataFolder() + SharedConstants.DATA_FILE);
 
         // Schedule Sign Update task
-        Bukkit.getScheduler().scheduleSyncRepeatingTask(this, SignUpdater::updateAllSigns, 0, Config.i.i(Constants.SIGN_UPDATE_TIME));
+        Bukkit.getScheduler().scheduleSyncRepeatingTask(this, SignUpdater::updateAllSigns, 0, Config.i.i(SharedConstants.SIGN_UPDATE_TIME));
 
         // Schedule Sign Uses Reset Task
-        if(Config.i.i(Constants.SIGN_USES_RESET_TIME) != 0) Bukkit.getScheduler().scheduleSyncRepeatingTask(this, () -> SignManager.i.resetSignUses(), Config.i.i(Constants.SIGN_USES_RESET_TIME), Config.i.i(Constants.SIGN_USES_RESET_TIME));
+        if(Config.i.i(SharedConstants.SIGN_USES_RESET_TIME) != 0) Bukkit.getScheduler().scheduleSyncRepeatingTask(this, () -> SignManager.i.resetSignUses(), Config.i.i(SharedConstants.SIGN_USES_RESET_TIME), Config.i.i(SharedConstants.SIGN_USES_RESET_TIME));
 
         // Create commands folder if it doesn't exist
-        File commandsFolder = new File(getDataFolder() + Config.i.s(Constants.COMMANDS_SUBFOLDER));
+        File commandsFolder = new File(getDataFolder() + Config.i.s(SharedConstants.COMMANDS_SUBFOLDER));
         if(!commandsFolder.mkdirs()) System.out.println(ChatColor.RED + "[UltimateSigns] Failed to create commands subfolder");
 
         Bukkit.getScheduler().scheduleSyncDelayedTask(this, this::checkForUpdates);
@@ -141,14 +141,14 @@ public class UltimateSigns extends JavaPlugin {
 
         // Re-register sign update task
         Bukkit.getScheduler().cancelTasks(this);
-        Bukkit.getScheduler().scheduleSyncRepeatingTask(this, SignUpdater::updateAllSigns, 0, Config.i.i(Constants.SIGN_UPDATE_TIME));
+        Bukkit.getScheduler().scheduleSyncRepeatingTask(this, SignUpdater::updateAllSigns, 0, Config.i.i(SharedConstants.SIGN_UPDATE_TIME));
 
         // Schedule Sign Uses Reset Task
-        if(Config.i.i(Constants.SIGN_USES_RESET_TIME) != 0) Bukkit.getScheduler().scheduleSyncRepeatingTask(this, () -> SignManager.i.resetSignUses(), 0, Constants.SIGN_USES_RESET_CHECK_INTERVAL);
+        if(Config.i.i(SharedConstants.SIGN_USES_RESET_TIME) != 0) Bukkit.getScheduler().scheduleSyncRepeatingTask(this, () -> SignManager.i.resetSignUses(), 0, SharedConstants.SIGN_USES_RESET_CHECK_INTERVAL);
 
         // Also reload signs (save and load them)
         SignManager.i.saveSigns();
-        new SignManager(getDataFolder() + Constants.DATA_FILE);
+        new SignManager(getDataFolder() + SharedConstants.DATA_FILE);
 
         // Update all signs - just in case
         SignUpdater.updateAllSigns();
