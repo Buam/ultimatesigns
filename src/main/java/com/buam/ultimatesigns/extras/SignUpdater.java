@@ -1,9 +1,10 @@
 package com.buam.ultimatesigns.extras;
 
-import com.buam.ultimatesigns.SignHelper;
 import com.buam.ultimatesigns.SignManager;
 import com.buam.ultimatesigns.USign;
 import com.buam.ultimatesigns.UltimateSigns;
+import com.buam.ultimatesigns.utils.SignUtils;
+import com.buam.ultimatesigns.utils.TextUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -35,7 +36,7 @@ public class SignUpdater {
             SignManager.i.removeSign(block.getLocation());
         }
         for(Player p : Bukkit.getServer().getOnlinePlayers()) {
-            SignHelper.sendSignChange(p, block, SignHelper.translate((Sign) block.getState(), p));
+            SignUtils.sendSignChange(p, block, TextUtils.translate((Sign) block.getState(), p));
         }
     }
 
@@ -50,7 +51,7 @@ public class SignUpdater {
                 toRemove.add(s.getLocation());
                 continue;
             }
-            SignHelper.sendSignChange(p, s.getBlock(), SignHelper.translate((Sign) s.getBlock().getState(), p));
+            SignUtils.sendSignChange(p, s.getBlock(), TextUtils.translate((Sign) s.getBlock().getState(), p));
         }
         for(Location s : toRemove) {
             SignManager.i.removeSign(s);
@@ -63,7 +64,7 @@ public class SignUpdater {
      * @param b The sign block
      */
     public static void sendOriginalSignText(Player p, Block b) {
-        SignHelper.sendSignChange(p, b, ((Sign) b.getState()).getLines());
+        SignUtils.sendSignChange(p, b, ((Sign) b.getState()).getLines());
     }
 
     /**
@@ -77,7 +78,7 @@ public class SignUpdater {
                 SignManager.i.removeSign(s.getLocation());
                 continue;
             }
-            SignHelper.sendSignChange(player, s.getBlock(), SignHelper.translate((Sign) s.getBlock().getState(), player));
+            SignUtils.sendSignChange(player, s.getBlock(), TextUtils.translate((Sign) s.getBlock().getState(), player));
         }
     }
 
@@ -95,6 +96,6 @@ public class SignUpdater {
      * @param block The sign
      */
     public static void handleSignUpdateForPlayer(Player player, Block block) {
-        SignHelper.sendSignChange(player, block, SignHelper.translate((Sign) block.getState(), player));
+        SignUtils.sendSignChange(player, block, TextUtils.translate((Sign) block.getState(), player));
     }
 }

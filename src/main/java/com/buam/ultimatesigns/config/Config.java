@@ -1,7 +1,7 @@
 package com.buam.ultimatesigns.config;
 
-import com.buam.ultimatesigns.SignHelper;
 import com.buam.ultimatesigns.lang.TypeManager;
+import com.buam.ultimatesigns.utils.TextUtils;
 import com.buam.ultimatesigns.variables.Variable;
 import com.buam.ultimatesigns.variables.VariableType;
 import org.bukkit.ChatColor;
@@ -74,11 +74,11 @@ public class Config {
      * @return The translated string
      */
     public String s(final String key) {
-        return SignHelper.translateColors(config.getString(key));
+        return TextUtils.translateColors(config.getString(key));
     }
 
     public String s(final String key, final String standard) {
-        return SignHelper.translateColors(config.getString(key, standard));
+        return TextUtils.translateColors(config.getString(key, standard));
     }
 
     /**

@@ -1,9 +1,9 @@
 package com.buam.ultimatesigns.lang;
 
-import com.buam.ultimatesigns.SignHelper;
 import com.buam.ultimatesigns.USign;
 import com.buam.ultimatesigns.UltimateSigns;
 import com.buam.ultimatesigns.lang.exceptions.InvalidArgumentsException;
+import com.buam.ultimatesigns.utils.TextUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -81,7 +81,7 @@ public class Language {
                 if (TypeManager.isText(player)) {
                     player = TypeManager.getText(player, p);
                 }
-                message = SignHelper.translateColors(TypeManager.translate(message, p, s));
+                message = TextUtils.translateColors(TypeManager.translate(message, p, s));
 
                 Player messageTo = Bukkit.getServer().getPlayer(player);
                 if (messageTo != null) {

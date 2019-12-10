@@ -6,7 +6,7 @@ import com.buam.ultimatesigns.UltimateSigns;
 import com.buam.ultimatesigns.commands.ParticleHelper;
 import com.buam.ultimatesigns.config.Config;
 import com.buam.ultimatesigns.config.Messages;
-import com.buam.ultimatesigns.files.CommandFileReader;
+import com.buam.ultimatesigns.files.FileReader;
 import org.bukkit.ChatColor;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
@@ -38,7 +38,7 @@ public class CMDFile {
 
             // Load file, if it doesn't work, send the error message
             try {
-                SignManager.i.setCommands(target.getLocation(), CommandFileReader.read(UltimateSigns.i.getDataFolder() + Config.i.s(Constants.COMMANDS_SUBFOLDER) + file));
+                SignManager.i.setCommands(target.getLocation(), FileReader.read(UltimateSigns.i.getDataFolder() + Config.i.s(Constants.COMMANDS_SUBFOLDER) + file));
                 player.sendMessage(UltimateSigns.PREFIX + Messages.i.s("loaded-commands-message"));
 
                 // Play a cool particle effect!

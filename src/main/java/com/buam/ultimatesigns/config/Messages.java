@@ -1,6 +1,6 @@
 package com.buam.ultimatesigns.config;
 
-import com.buam.ultimatesigns.SignHelper;
+import com.buam.ultimatesigns.utils.TextUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -29,7 +29,7 @@ public class Messages {
             s = s.replace("%" + (i + 1), args[i].toString());
         }
 
-        return SignHelper.translateColors(s);
+        return TextUtils.translateColors(s);
     }
 
     private void createConfig(final JavaPlugin plugin) {

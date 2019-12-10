@@ -113,7 +113,7 @@ public class CSVFile {
         if(!f.exists()) return out;
 
         try {
-            BufferedReader reader = new BufferedReader(new FileReader(f));
+            BufferedReader reader = new BufferedReader(new java.io.FileReader(f));
 
             String line;
 
