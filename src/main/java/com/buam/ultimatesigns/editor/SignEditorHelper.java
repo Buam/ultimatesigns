@@ -1,6 +1,7 @@
 package com.buam.ultimatesigns.editor;
 
 import com.buam.ultimatesigns.SharedConstants;
+import com.buam.ultimatesigns.UltimateSigns;
 import com.comphenix.protocol.PacketType;
 import com.comphenix.protocol.ProtocolLibrary;
 import com.comphenix.protocol.ProtocolManager;

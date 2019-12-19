@@ -21,6 +21,8 @@ public class SignUtils {
      * @param lines The text to update
      */
     public static void sendSignChange(Player p, Block b, String[] lines) {
+        if(!SharedConstants.isSign(b.getType())) return;
+
         if(!Config.i.b(SharedConstants.ENABLE_UPDATE_PERMISSION) || p.hasPermission(SharedConstants.UPDATE_PERMISSION)) {
             p.sendSignChange(b.getLocation(), lines);
         }
@@ -32,10 +34,9 @@ public class SignUtils {
      */
     public static Block getAttachedBlock(Block block) {
         if(block != null && block.getState() instanceof Sign) {
-            String version = Bukkit.getVersion();
 
             // Use the BlockData API for new Versions
-            if(version.contains("1.14") || version.contains("1.13")) {
+            if(UltimateSigns.version >= 113) {
                 BlockData data = block.getBlockData();
 
                 if(data instanceof Directional) {

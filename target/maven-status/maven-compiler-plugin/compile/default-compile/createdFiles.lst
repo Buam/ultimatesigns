@@ -30,6 +30,7 @@ com\buam\ultimatesigns\editor\SignEditorHelper$SignGUIListener.class
 com\buam\ultimatesigns\api\Variable$1.class
 com\buam\ultimatesigns\lang\variables\PlayerName.class
 com\buam\ultimatesigns\config\Messages.class
+com\buam\ultimatesigns\SharedConstants.class
 com\buam\ultimatesigns\lang\variables\PlayerDisplayName.class
 com\buam\ultimatesigns\files\FileReader.class
 com\buam\ultimatesigns\lang\variables\PlayerBalance.class
@@ -37,7 +38,6 @@ com\buam\ultimatesigns\update\UpdateCheck.class
 com\buam\ultimatesigns\variables\VariableType.class
 com\buam\ultimatesigns\commands\permission\sub\PMRemove.class
 com\buam\ultimatesigns\files\CSVFile.class
-com\buam\ultimatesigns\Constants.class
 com\buam\ultimatesigns\commands\cmd\sub\CMDFile.class
 com\buam\ultimatesigns\api\VariableType.class
 com\buam\ultimatesigns\commands\permission\PMBase.class
@@ -53,6 +53,7 @@ com\buam\ultimatesigns\SignTime.class
 com\buam\ultimatesigns\events\SignListener.class
 com\buam\ultimatesigns\UltimateSigns.class
 com\buam\ultimatesigns\utils\SignUtils.class
+com\buam\ultimatesigns\commands\USTabCompleter.class
 com\buam\ultimatesigns\commands\ChatStates.class
 com\buam\ultimatesigns\commands\CommandUS.class
 com\buam\ultimatesigns\commands\other\EditCmd.class

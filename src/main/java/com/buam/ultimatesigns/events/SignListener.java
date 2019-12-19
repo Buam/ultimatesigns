@@ -125,57 +125,58 @@ public class SignListener implements Listener {
     @EventHandler
     public void onPlayerInteract(PlayerInteractEvent e) throws IllegalAccessException, InstantiationException, InvalidArgumentsException, NoSuchMethodException, InvocationTargetException {
         if(e.getAction() != Action.RIGHT_CLICK_BLOCK && e.getAction() != Action.LEFT_CLICK_BLOCK) return;
-        if (SharedConstants.isSign(e.getClickedBlock().getType())) {
-            SignUpdater.handleSignUpdateForPlayer(e.getPlayer(), e.getClickedBlock());
+        //if (SharedConstants.isSign(e.getClickedBlock().getType())) {
+        boolean isSign = SharedConstants.isSign(e.getClickedBlock().getType());
+        if(isSign) SignUpdater.handleSignUpdateForPlayer(e.getPlayer(), e.getClickedBlock());
 
-            if (e.getPlayer().isSneaking() && e.getAction().equals(Action.RIGHT_CLICK_BLOCK) && UltimateSigns.command.inEditMode.contains(e.getPlayer())) {
+        if (isSign && e.getPlayer().isSneaking() && e.getAction().equals(Action.RIGHT_CLICK_BLOCK) && UltimateSigns.command.inEditMode.contains(e.getPlayer())) {
 
-                // Edit the sign
-                Block block = e.getClickedBlock();
+            // Edit the sign
+            Block block = e.getClickedBlock();
 
-                if (block != null) {
-                    // It's a sign
-                    SignUpdater.sendOriginalSignText(e.getPlayer(), block);
+            if (block != null) {
+                // It's a sign
+                SignUpdater.sendOriginalSignText(e.getPlayer(), block);
 
-                    // Open sign editor
-                    SignUtils.openSignEditor((Sign) block.getState(), e.getPlayer());
+                // Open sign editor
+                SignUtils.openSignEditor((Sign) block.getState(), e.getPlayer());
 
-                }
+            }
 
-            } else {
-                // Execute commands
-                if (SignManager.i.isUltimateSign(e.getClickedBlock().getLocation())) {
-                    // does the player have all permissions
-                    if(SignManager.i.signAt(e.getClickedBlock().getLocation()).hasAllPermissions(e.getPlayer())) {
-                        boolean left = e.getAction() == Action.LEFT_CLICK_BLOCK;
-                        boolean hasLeft = false;
-                        List<String> commands = SignManager.i.signAt(e.getClickedBlock().getLocation()).getCommands();
-                        for(String s : commands) {
-                            if (s.contains("(left)")) {
-                                hasLeft = true;
-                                break;
-                            }
+        } else {
+            // Execute commands
+            if (SignManager.i.isUltimateSign(e.getClickedBlock().getLocation())) {
+                // does the player have all permissions
+                if(SignManager.i.signAt(e.getClickedBlock().getLocation()).hasAllPermissions(e.getPlayer())) {
+                    boolean left = e.getAction() == Action.LEFT_CLICK_BLOCK;
+                    boolean hasLeft = false;
+                    List<String> commands = SignManager.i.signAt(e.getClickedBlock().getLocation()).getCommands();
+                    for(String s : commands) {
+                        if (s.contains("(left)")) {
+                            hasLeft = true;
+                            break;
                         }
-                        if(!e.getPlayer().isSneaking() || !left) {
-                            // Save the time of this use
-                            SignManager.i.saveSignTime(e.getPlayer(), e.getClickedBlock().getLocation());
-
-                            // Increase click counter
-                            SignManager.i.saveUse(e.getPlayer(), e.getClickedBlock().getLocation());
-
-                            // Start language engine
-                            Language l = new Language(commands.stream().map(String::new).toArray(String[]::new), left);
-                            l.executeAll(e.getPlayer(), SignManager.i.signAt(e.getClickedBlock().getLocation()));
-
-                            // Cancel event if left clicked so the sign won't be destroyed
-                            if(left && hasLeft) e.setCancelled(true);
-                        }
-                    } else {
-                        e.getPlayer().sendMessage(Messages.i.s("no-permission-sign-message"));
                     }
+                    if(!e.getPlayer().isSneaking() || !left) {
+                        // Save the time of this use
+                        SignManager.i.saveSignTime(e.getPlayer(), e.getClickedBlock().getLocation());
+
+                        // Increase click counter
+                        SignManager.i.saveUse(e.getPlayer(), e.getClickedBlock().getLocation());
+
+                        // Start language engine
+                        Language l = new Language(commands.stream().map(String::new).toArray(String[]::new), left);
+                        l.executeAll(e.getPlayer(), SignManager.i.signAt(e.getClickedBlock().getLocation()));
+
+                        // Cancel event if left clicked so the sign won't be destroyed
+                        if(left && hasLeft) e.setCancelled(true);
+                    }
+                } else {
+                    e.getPlayer().sendMessage(Messages.i.s("no-permission-sign-message"));
                 }
             }
         }
+        //}
     }
 
 

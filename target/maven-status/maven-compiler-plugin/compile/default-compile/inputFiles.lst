@@ -20,10 +20,10 @@ C:\Users\svens\IdeaProjects\UltimateSigns\src\main\java\com\buam\ultimatesigns\u
 C:\Users\svens\IdeaProjects\UltimateSigns\src\main\java\com\buam\ultimatesigns\variables\Variable.java
 C:\Users\svens\IdeaProjects\UltimateSigns\src\main\java\com\buam\ultimatesigns\commands\other\ReloadCmd.java
 C:\Users\svens\IdeaProjects\UltimateSigns\src\main\java\com\buam\ultimatesigns\lang\types\Number.java
+C:\Users\svens\IdeaProjects\UltimateSigns\src\main\java\com\buam\ultimatesigns\SharedConstants.java
 C:\Users\svens\IdeaProjects\UltimateSigns\src\main\java\com\buam\ultimatesigns\commands\cmd\sub\CMDEdit.java
 C:\Users\svens\IdeaProjects\UltimateSigns\src\main\java\com\buam\ultimatesigns\commands\cmd\sub\CMDAdd.java
 C:\Users\svens\IdeaProjects\UltimateSigns\src\main\java\com\buam\ultimatesigns\commands\other\CopyPasteCmd.java
-C:\Users\svens\IdeaProjects\UltimateSigns\src\main\java\com\buam\ultimatesigns\Constants.java
 C:\Users\svens\IdeaProjects\UltimateSigns\src\main\java\com\buam\ultimatesigns\api\Variable.java
 C:\Users\svens\IdeaProjects\UltimateSigns\src\main\java\com\buam\ultimatesigns\files\FileReader.java
 C:\Users\svens\IdeaProjects\UltimateSigns\src\main\java\com\buam\ultimatesigns\lang\variables\IfNumberStatement.java
@@ -32,6 +32,7 @@ C:\Users\svens\IdeaProjects\UltimateSigns\src\main\java\com\buam\ultimatesigns\l
 C:\Users\svens\IdeaProjects\UltimateSigns\src\main\java\com\buam\ultimatesigns\lang\variables\SignRedstonePowered.java
 C:\Users\svens\IdeaProjects\UltimateSigns\src\main\java\com\buam\ultimatesigns\commands\ParticleHelper.java
 C:\Users\svens\IdeaProjects\UltimateSigns\src\main\java\com\buam\ultimatesigns\commands\CommandUS.java
+C:\Users\svens\IdeaProjects\UltimateSigns\src\main\java\com\buam\ultimatesigns\commands\USTabCompleter.java
 C:\Users\svens\IdeaProjects\UltimateSigns\src\main\java\com\buam\ultimatesigns\lang\variables\PlayersOnline.java
 C:\Users\svens\IdeaProjects\UltimateSigns\src\main\java\com\buam\ultimatesigns\api\VariableType.java
 C:\Users\svens\IdeaProjects\UltimateSigns\src\main\java\com\buam\ultimatesigns\UltimateSigns.java

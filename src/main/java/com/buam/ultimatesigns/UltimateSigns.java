@@ -1,6 +1,7 @@
 package com.buam.ultimatesigns;
 
 import com.buam.ultimatesigns.commands.CommandUS;
+import com.buam.ultimatesigns.commands.USTabCompleter;
 import com.buam.ultimatesigns.config.Aliases;
 import com.buam.ultimatesigns.config.Config;
 import com.buam.ultimatesigns.config.Messages;
@@ -15,6 +16,8 @@ import com.comphenix.protocol.events.PacketEvent;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.command.Command;
+import org.bukkit.command.PluginCommand;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -35,9 +38,9 @@ public class UltimateSigns extends JavaPlugin {
     public static UltimateSigns i;
 
     /**
-     * Version of the server. (Use contains to check for certain versions
+     * Minecraft Version that Bukkit is on. 1.14 would be 114 etc.
      */
-    public static String version;
+    public static int version;
 
     /**
      * Static reference to the sign editor class
@@ -76,7 +79,11 @@ public class UltimateSigns extends JavaPlugin {
      */
     public void onEnable() {
         i = this;
-        version = Bukkit.getServer().getClass().getPackage().getName().split("\\.")[3];
+
+        // Get Minecraft version
+        String[] versionSplit = Bukkit.getVersion().split("\\.");
+        version = Integer.parseInt(versionSplit[0] + versionSplit[1]);
+
         saveDefaultConfig();
 
         getServer().getPluginManager().registerEvents(new SignListener(), this);
@@ -87,7 +94,7 @@ public class UltimateSigns extends JavaPlugin {
             System.out.println("[UltimateSigns] Successfully hooked into Vault!");
         }
 
-        if(getServer().getPluginManager().isPluginEnabled("ProtocolLib") && (version.contains("1_14") || version.contains("1_13") || version.contains("1_12"))) {
+        if(getServer().getPluginManager().isPluginEnabled("ProtocolLib")) {
             signEditor = new SignEditorHelper(this);
             // Add (silent) Packet listener to silence commands from signs
             ProtocolLibrary.getProtocolManager().addPacketListener(
@@ -104,7 +111,9 @@ public class UltimateSigns extends JavaPlugin {
         }
 
         command = new CommandUS(this);
-        getCommand("ultimatesigns").setExecutor(command);
+        PluginCommand usCmd = getCommand("ultimatesigns");
+        usCmd.setExecutor(command);
+        usCmd.setTabCompleter(new USTabCompleter());
 
         // Load configuration
         new Config(getConfig());
