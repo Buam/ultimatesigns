@@ -51,6 +51,7 @@ com\buam\ultimatesigns\lang\variables\PlayersOnline.class
 com\buam\ultimatesigns\SignManager$1.class
 com\buam\ultimatesigns\SignTime.class
 com\buam\ultimatesigns\events\SignListener.class
+com\buam\ultimatesigns\utils\ReflectionUtil.class
 com\buam\ultimatesigns\UltimateSigns.class
 com\buam\ultimatesigns\utils\SignUtils.class
 com\buam\ultimatesigns\commands\USTabCompleter.class

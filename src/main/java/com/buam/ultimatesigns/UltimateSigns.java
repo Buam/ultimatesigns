@@ -81,8 +81,9 @@ public class UltimateSigns extends JavaPlugin {
         i = this;
 
         // Get Minecraft version
-        String[] versionSplit = Bukkit.getVersion().split("\\.");
-        version = Integer.parseInt(versionSplit[0] + versionSplit[1]);
+        String[] versionSplit = Bukkit.getBukkitVersion().split("\\.");
+        System.out.println(Bukkit.getBukkitVersion());
+        version = Integer.parseInt(versionSplit[0] + versionSplit[1].substring(0, 2));
 
         saveDefaultConfig();
 

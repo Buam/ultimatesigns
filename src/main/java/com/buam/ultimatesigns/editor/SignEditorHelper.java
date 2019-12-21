@@ -1,7 +1,6 @@
 package com.buam.ultimatesigns.editor;
 
 import com.buam.ultimatesigns.SharedConstants;
-import com.buam.ultimatesigns.UltimateSigns;
 import com.comphenix.protocol.PacketType;
 import com.comphenix.protocol.ProtocolLibrary;
 import com.comphenix.protocol.ProtocolManager;
@@ -61,7 +60,7 @@ public class SignEditorHelper {
                     public void onPacketReceiving(PacketEvent event) {
                         // ONLY WORKS IN 1.12 - 1.14!
                         final Player player = event.getPlayer();
-                        if(!expectsSignUpdate.contains(player.getUniqueId())) return;
+                        if (!expectsSignUpdate.contains(player.getUniqueId())) return;
                         expectsSignUpdate.remove(player.getUniqueId());
                         Vector v = signLocations.remove(player.getName());
                         BlockPosition bp = event.getPacket().getBlockPositionModifier().getValues().get(0);
@@ -78,6 +77,7 @@ public class SignEditorHelper {
                     }
                 }
         );
+
     }
 
     /**
@@ -87,39 +87,39 @@ public class SignEditorHelper {
      * @param defaultText The default text which should be displayed in the editor (the original sign text)
      * @param response The sign listener which will handle the closing of the editor and set the signs lines to the right value
      */
-    @SuppressWarnings("deprecation")
+    //@SuppressWarnings("deprecation")
     public void open(Player player, Location sign, String[] defaultText, SignGUIListener response) {
         List<PacketContainer> packets = new ArrayList<>();
         int x = sign.getBlockX();
         int y = sign.getBlockY();
         int z = sign.getBlockZ();
         BlockPosition bpos = new BlockPosition(x, y, z);
-        PacketContainer packet133 = protocolManager.createPacket(PacketType.Play.Server.OPEN_SIGN_EDITOR);
+        PacketContainer signEditorPacket = protocolManager.createPacket(PacketType.Play.Server.OPEN_SIGN_EDITOR);
 
         if (defaultText != null) {
-            PacketContainer packet53 = protocolManager.createPacket(PacketType.Play.Server.BLOCK_CHANGE);
-            PacketContainer packet130 = protocolManager.createPacket(PacketType.Play.Server.UPDATE_SIGN);
+            PacketContainer blockChangePacket = protocolManager.createPacket(PacketType.Play.Server.BLOCK_CHANGE);
+            PacketContainer signUpdatePacket = protocolManager.createPacket(PacketType.Play.Server.UPDATE_SIGN);
             WrappedBlockData iblock = WrappedBlockData.createData(SharedConstants.getMaterial("LEGACY_SIGN_POST"));
             WrappedChatComponent[] cc = {WrappedChatComponent.fromText(defaultText[0]), WrappedChatComponent.fromText(defaultText[1]), WrappedChatComponent.fromText(defaultText[2]), WrappedChatComponent.fromText(defaultText[3])};
 
-            packet53.getBlockPositionModifier().write(0, bpos);
-            packet53.getBlockData().write(0, iblock);
-            packet130.getBlockPositionModifier().write(0, bpos);
-            packet130.getChatComponentArrays().write(0, cc);
-            packets.add(packet53);
-            packets.add(packet130);
+            blockChangePacket.getBlockPositionModifier().write(0, bpos);
+            blockChangePacket.getBlockData().write(0, iblock);
+            signUpdatePacket.getBlockPositionModifier().write(0, bpos);
+            signUpdatePacket.getChatComponentArrays().write(0, cc);
+            packets.add(blockChangePacket);
+            packets.add(signUpdatePacket);
         }
 
-        packet133.getBlockPositionModifier().write(0, bpos);
-        packets.add(packet133);
+        signEditorPacket.getBlockPositionModifier().write(0, bpos);
+        packets.add(signEditorPacket);
 
         if (defaultText != null) {
-            PacketContainer packet53 = protocolManager.createPacket(PacketType.Play.Server.BLOCK_CHANGE);
+            PacketContainer blockChangePacket = protocolManager.createPacket(PacketType.Play.Server.BLOCK_CHANGE);
             WrappedBlockData iblock = WrappedBlockData.createData(Material.BEDROCK);
 
-            packet53.getBlockPositionModifier().write(0, bpos);
-            packet53.getBlockData().write(0, iblock);
-            packets.add(packet53);
+            blockChangePacket.getBlockPositionModifier().write(0, bpos);
+            blockChangePacket.getBlockData().write(0, iblock);
+            packets.add(blockChangePacket);
         }
 
         try {
@@ -146,6 +146,7 @@ public class SignEditorHelper {
     /**
      * The sign listener interface
      */
+    @FunctionalInterface
     public interface SignGUIListener {
         void onSignDone(Player player, String[] lines);
     }
